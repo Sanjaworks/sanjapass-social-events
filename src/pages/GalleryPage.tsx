@@ -31,8 +31,8 @@ const GalleryPage = () => {
   
   const searchedPhotos = searchQuery 
     ? filteredPhotos.filter(photo => 
-        photo.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        photo.description.toLowerCase().includes(searchQuery.toLowerCase()))
+        photo.caption?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        photo.userName.toLowerCase().includes(searchQuery.toLowerCase()))
     : filteredPhotos;
 
   const handleLikePhoto = (photoId: string) => {
@@ -112,12 +112,12 @@ const GalleryPage = () => {
                   <div key={photo.id} className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
                     <div className="relative">
                       <img 
-                        src={photo.url} 
-                        alt={photo.title} 
+                        src={photo.photoUrl} 
+                        alt={photo.caption || 'Photo'} 
                         className="w-full aspect-square object-cover"
                       />
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
-                        <h3 className="text-white font-medium truncate">{photo.title}</h3>
+                        <h3 className="text-white font-medium truncate">{photo.caption || 'Foto do evento'}</h3>
                       </div>
                     </div>
                     
@@ -135,7 +135,7 @@ const GalleryPage = () => {
                         </button>
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
-                        {photo.author}
+                        {photo.userName}
                       </p>
                     </div>
                   </div>

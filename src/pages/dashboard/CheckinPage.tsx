@@ -14,18 +14,23 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
+type CheckInStatus = 'valid' | 'used' | 'invalid';
+type ScanStatus = 'none' | CheckInStatus;
+
+interface CheckIn {
+  name: string;
+  ticketId: string;
+  status: CheckInStatus;
+  time: string;
+}
+
 const CheckinPage = () => {
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState('');
-  const [scanStatus, setScanStatus] = useState<'none' | 'valid' | 'used' | 'invalid'>('none');
+  const [scanStatus, setScanStatus] = useState<ScanStatus>('none');
   const [loading, setLoading] = useState(false);
   const [observation, setObservation] = useState('');
-  const [checkIns, setCheckIns] = useState<Array<{
-    name: string;
-    ticketId: string;
-    status: 'valid' | 'used' | 'invalid';
-    time: string;
-  }>>([]);
+  const [checkIns, setCheckIns] = useState<CheckIn[]>([]);
   
   // Mock attendee data
   const mockAttendee = {
@@ -72,8 +77,11 @@ const CheckinPage = () => {
   };
 
   const handleMarkEntry = () => {
+    // Verificamos que o status é válido antes de adicionar ao histórico
+    if (scanStatus !== 'valid') return;
+    
     // Adicionar ao histórico de check-ins
-    const newCheckIn = {
+    const newCheckIn: CheckIn = {
       name: mockAttendee.name,
       ticketId: searchQuery,
       status: scanStatus,
