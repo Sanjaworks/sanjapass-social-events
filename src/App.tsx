@@ -14,6 +14,7 @@ import CheckoutPage from "./pages/CheckoutPage";
 import GalleryPage from "./pages/GalleryPage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
+import RegisterPage from "./pages/RegisterPage";
 
 // Dashboard Pages
 import CustomerDashboard from "./pages/dashboard/CustomerDashboard";
@@ -21,13 +22,24 @@ import CustomerTickets from "./pages/dashboard/CustomerTickets";
 import OrganizerDashboard from "./pages/dashboard/OrganizerDashboard";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import CheckinPage from "./pages/dashboard/CheckinPage";
+import MasterAdminPanel from "./pages/dashboard/MasterAdminPanel";
+import OrganizersManagement from "./pages/dashboard/OrganizersManagement";
+import CommissionsPage from "./pages/dashboard/CommissionsPage";
+import ReportsPage from "./pages/dashboard/ReportsPage";
+import EventApprovalPage from "./pages/dashboard/EventApprovalPage";
+import AlertsPage from "./pages/dashboard/AlertsPage";
+import ParticipantPage from "./pages/dashboard/ParticipantPage";
 
 const queryClient = new QueryClient();
 
-// Protected route component
+// Protected route component (now with bypass for development)
 const ProtectedRoute = ({ children, allowedRoles }: { children: React.ReactNode, allowedRoles?: string[] }) => {
   const { user, isAuthenticated } = useAuth();
-
+  
+  // For development purposes we're bypassing authentication
+  return <>{children}</>;
+  
+  /* Original protected route logic
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
@@ -37,6 +49,7 @@ const ProtectedRoute = ({ children, allowedRoles }: { children: React.ReactNode,
   }
 
   return <>{children}</>;
+  */
 };
 
 const App = () => (
@@ -54,6 +67,7 @@ const App = () => (
             <Route path="/checkout/:eventId/:ticketId" element={<CheckoutPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             
             {/* Customer Routes */}
             <Route 
@@ -80,6 +94,10 @@ const App = () => (
                 </ProtectedRoute>
               } 
             />
+            <Route 
+              path="/participant/:userId" 
+              element={<ParticipantPage />} 
+            />
             
             {/* Organizer Routes */}
             <Route 
@@ -105,6 +123,56 @@ const App = () => (
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
                   <AdminDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* Master Admin Routes */}
+            <Route 
+              path="/master" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <MasterAdminPanel />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/master/organizers" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <OrganizersManagement />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/master/commissions" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <CommissionsPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/master/approve" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <EventApprovalPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/master/reports" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <ReportsPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/master/alerts" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <AlertsPage />
                 </ProtectedRoute>
               } 
             />

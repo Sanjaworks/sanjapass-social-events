@@ -1,5 +1,5 @@
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import { users } from '@/data/mockData';
 
@@ -16,6 +16,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   isAuthenticated: boolean;
+  setUserByRole: (role: 'customer' | 'organizer' | 'admin' | 'master') => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,12 +26,51 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
 
   // Check if user is already logged in from localStorage
-  useState(() => {
+  useEffect(() => {
     const savedUser = localStorage.getItem('sanjapass_user');
     if (savedUser) {
       setUser(JSON.parse(savedUser));
+    } else {
+      // Auto login as admin for development
+      const adminUser = users.find(u => u.email === 'admin@sanjapass.com');
+      if (adminUser) {
+        setUserByRole('master');
+      }
     }
-  });
+  }, []);
+
+  const setUserByRole = (role: 'customer' | 'organizer' | 'admin' | 'master') => {
+    let mockUser: User;
+    
+    switch(role) {
+      case 'customer':
+        mockUser = users.find(u => u.email === 'maria@example.com')!;
+        break;
+      case 'organizer':
+        mockUser = users.find(u => u.email === 'ana@eventpro.com')!;
+        break;
+      case 'admin':
+        mockUser = users.find(u => u.email === 'admin@sanjapass.com')!;
+        break;
+      case 'master':
+        // Create a master admin user if it doesn't exist
+        mockUser = {
+          id: 'master-admin-id',
+          name: 'SanjaPass Master Admin',
+          email: 'master@sanjapass.com',
+          role: 'admin', // We'll use admin role but extend privileges in UI
+          photoUrl: 'https://i.pravatar.cc/300?u=master'
+        };
+        break;
+    }
+    
+    setUser(mockUser);
+    localStorage.setItem('sanjapass_user', JSON.stringify(mockUser));
+    toast({
+      title: 'Login automático',
+      description: `Logado como ${mockUser.name} (${role})`,
+    });
+  };
 
   const login = async (email: string, password: string) => {
     try {
@@ -86,7 +126,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user, setUserByRole }}>
       {children}
     </AuthContext.Provider>
   );
