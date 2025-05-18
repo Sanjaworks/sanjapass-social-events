@@ -147,6 +147,8 @@ const OrganizerDashboard = () => {
                   const today = new Date();
                   
                   let status;
+                  let statusClass;
+                  
                   if (eventDate < today) {
                     status = 'Concluído';
                     statusClass = 'bg-gray-100 text-gray-800';
@@ -157,8 +159,6 @@ const OrganizerDashboard = () => {
                     status = 'Ativo';
                     statusClass = 'bg-green-100 text-green-800';
                   }
-                  
-                  let statusClass;
                   
                   return (
                     <tr key={event.id}>
@@ -181,11 +181,7 @@ const OrganizerDashboard = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          status === 'Ativo' ? 'bg-green-100 text-green-800' :
-                          status === 'Esgotado' ? 'bg-red-100 text-red-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
+                        <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}`}>
                           {status}
                         </span>
                       </td>
