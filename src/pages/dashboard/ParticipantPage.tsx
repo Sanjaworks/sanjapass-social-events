@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Share, Upload, Calendar, History, Image, ExternalLink } from 'lucide-react';
+import { Share, Upload, Calendar, History, Image, ExternalLink, Download } from 'lucide-react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -40,6 +40,20 @@ const ParticipantPage = () => {
       title: "Upload de imagem",
       description: "Funcionalidade de upload em desenvolvimento.",
     });
+  };
+
+  const handleDownloadTicket = () => {
+    toast({
+      title: "Download iniciado",
+      description: "Seu ingresso NFT está sendo gerado para download.",
+    });
+    // Em uma aplicação real, isto geraria um PDF ou imagem do ingresso
+    setTimeout(() => {
+      toast({
+        title: "Download concluído",
+        description: "Ingresso salvo com sucesso!",
+      });
+    }, 1500);
   };
   
   if (!participant) {
@@ -130,6 +144,10 @@ const ParticipantPage = () => {
                     </div>
                     
                     <div className="flex justify-center gap-4">
+                      <Button variant="outline" onClick={handleDownloadTicket} className="flex items-center gap-2">
+                        <Download className="w-4 h-4" />
+                        Baixar Ingresso
+                      </Button>
                       <Button variant="outline" className="flex items-center gap-2">
                         <ExternalLink className="w-4 h-4" />
                         Compartilhar Experiência
@@ -166,7 +184,7 @@ const ParticipantPage = () => {
                         <Card key={ticket.id} className="overflow-hidden">
                           <div className="flex flex-col md:flex-row h-full">
                             <div className="md:w-1/4 bg-center bg-cover" 
-                                style={{backgroundImage: `url(${event?.coverImage})`}}>
+                                style={{backgroundImage: `url(${event?.bannerUrl})`}}>
                               <div className="h-32 md:h-full"></div>
                             </div>
                             <div className="p-6 md:w-3/4">

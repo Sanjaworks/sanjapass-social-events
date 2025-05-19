@@ -29,6 +29,7 @@ import ReportsPage from "./pages/dashboard/ReportsPage";
 import EventApprovalPage from "./pages/dashboard/EventApprovalPage";
 import AlertsPage from "./pages/dashboard/AlertsPage";
 import ParticipantPage from "./pages/dashboard/ParticipantPage";
+import Settings from "./pages/dashboard/Settings";
 
 const queryClient = new QueryClient();
 
@@ -95,6 +96,14 @@ const App = () => (
               } 
             />
             <Route 
+              path="/dashboard/settings" 
+              element={
+                <ProtectedRoute allowedRoles={['customer']}>
+                  <Settings />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
               path="/participant/:userId" 
               element={<ParticipantPage />} 
             />
@@ -116,6 +125,14 @@ const App = () => (
                 </ProtectedRoute>
               } 
             />
+            <Route 
+              path="/organizer/settings" 
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <Settings />
+                </ProtectedRoute>
+              } 
+            />
             
             {/* Admin Routes */}
             <Route 
@@ -123,6 +140,14 @@ const App = () => (
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
                   <AdminDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/settings" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <Settings />
                 </ProtectedRoute>
               } 
             />
