@@ -151,8 +151,8 @@ const MasterAdminPanel = () => {
                   <span className="font-medium">32</span>
                 </div>
               </div>
-              <Button className="w-full mt-4" onClick={() => navigate('/master/commissions')}>
-                Ver Detalhes
+              <Button className="w-full mt-4" onClick={() => navigate('/master/financial')}>
+                Ver Dashboard
               </Button>
             </CardContent>
           </Card>
@@ -185,6 +185,57 @@ const MasterAdminPanel = () => {
               <Button className="w-full mt-4" onClick={() => navigate('/master/approve')}>
                 Ver Pendentes
               </Button>
+            </CardContent>
+          </Card>
+          
+          <Card className="col-span-1 md:col-span-3">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <DollarSign className="w-5 h-5 mr-2" />
+                Sistema Financeiro
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="font-medium mb-2 flex items-center">
+                    <BarChart2 className="w-4 h-4 mr-2" />
+                    Dashboard Financeiro
+                  </h3>
+                  <p className="text-sm text-gray-500 mb-4">
+                    Visão geral das finanças, gráficos e métricas importantes.
+                  </p>
+                  <Button variant="outline" size="sm" className="w-full" onClick={() => navigate('/master/financial')}>
+                    Visualizar
+                  </Button>
+                </div>
+                
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="font-medium mb-2 flex items-center">
+                    <DollarSign className="w-4 h-4 mr-2" />
+                    Transações
+                  </h3>
+                  <p className="text-sm text-gray-500 mb-4">
+                    Gerenciar todas as transações financeiras realizadas na plataforma.
+                  </p>
+                  <Button variant="outline" size="sm" className="w-full" onClick={() => navigate('/master/transactions')}>
+                    Visualizar
+                  </Button>
+                </div>
+                
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="font-medium mb-2 flex items-center">
+                    <FileText className="w-4 h-4 mr-2" />
+                    Repasses aos Organizadores
+                  </h3>
+                  <p className="text-sm text-gray-500 mb-4">
+                    Gerenciar pagamentos e repasses financeiros para organizadores.
+                  </p>
+                  <Button variant="outline" size="sm" className="w-full" onClick={() => navigate('/master/payouts')}>
+                    Visualizar
+                  </Button>
+                </div>
+              </div>
             </CardContent>
           </Card>
           

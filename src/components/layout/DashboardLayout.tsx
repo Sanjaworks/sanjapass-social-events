@@ -1,7 +1,7 @@
 
 import { ReactNode, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Calendar, Users, Settings, ChevronRight, LogOut, Menu, X } from 'lucide-react';
+import { Home, Calendar, Users, Settings, ChevronRight, LogOut, Menu, X, DollarSign } from 'lucide-react';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -31,10 +31,21 @@ const DashboardLayout = ({ children, userType }: DashboardLayoutProps) => {
         ];
       case 'admin':
         return [
-          { name: 'Início', path: '/admin', icon: Home },
-          { name: 'Eventos', path: '/admin/events', icon: Calendar },
-          { name: 'Usuários', path: '/admin/users', icon: Users },
-          { name: 'Configurações', path: '/admin/settings', icon: Settings },
+          // Páginas Principais
+          { name: 'Dashboard', path: '/master', icon: Home },
+          { name: 'Gerenciar Organizadores', path: '/master/organizers', icon: Users },
+          { name: 'Aprovar Eventos', path: '/master/approve', icon: Calendar },
+          { name: 'Alertas', path: '/master/alerts', icon: ChevronRight },
+          { name: 'Relatórios', path: '/master/reports', icon: ChevronRight },
+          
+          // Páginas Financeiras
+          { name: 'Dashboard Financeiro', path: '/master/financial', icon: DollarSign },
+          { name: 'Transações', path: '/master/transactions', icon: DollarSign },
+          { name: 'Repasses', path: '/master/payouts', icon: DollarSign },
+          { name: 'Comissões', path: '/master/commissions', icon: DollarSign },
+          
+          // Configurações
+          { name: 'Configurações', path: '/master/settings', icon: Settings },
         ];
       default:
         return [];
@@ -54,7 +65,7 @@ const DashboardLayout = ({ children, userType }: DashboardLayoutProps) => {
       case 'organizer':
         return 'Painel do Organizador';
       case 'admin':
-        return 'Painel Administrativo';
+        return 'Painel Administrativo Master';
       default:
         return 'Painel';
     }
@@ -87,7 +98,7 @@ const DashboardLayout = ({ children, userType }: DashboardLayoutProps) => {
             <p className="text-sm text-gray-500 mt-1">{getDashboardTitle()}</p>
           </div>
 
-          <nav className="py-6 flex-grow">
+          <nav className="py-6 flex-grow overflow-y-auto">
             <ul className="space-y-1">
               {navItems.map((item) => {
                 const active = isActive(item.path);

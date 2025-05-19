@@ -20,7 +20,6 @@ import RegisterPage from "./pages/RegisterPage";
 import CustomerDashboard from "./pages/dashboard/CustomerDashboard";
 import CustomerTickets from "./pages/dashboard/CustomerTickets";
 import OrganizerDashboard from "./pages/dashboard/OrganizerDashboard";
-import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import CheckinPage from "./pages/dashboard/CheckinPage";
 import MasterAdminPanel from "./pages/dashboard/MasterAdminPanel";
 import OrganizersManagement from "./pages/dashboard/OrganizersManagement";
@@ -30,6 +29,9 @@ import EventApprovalPage from "./pages/dashboard/EventApprovalPage";
 import AlertsPage from "./pages/dashboard/AlertsPage";
 import ParticipantPage from "./pages/dashboard/ParticipantPage";
 import Settings from "./pages/dashboard/Settings";
+import FinancialDashboard from "./pages/dashboard/FinancialDashboard";
+import FinancialTransactions from "./pages/dashboard/FinancialTransactions";
+import PayoutManagement from "./pages/dashboard/PayoutManagement";
 
 const queryClient = new QueryClient();
 
@@ -134,24 +136,6 @@ const App = () => (
               } 
             />
             
-            {/* Admin Routes */}
-            <Route 
-              path="/admin" 
-              element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/admin/settings" 
-              element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <Settings />
-                </ProtectedRoute>
-              } 
-            />
-            
             {/* Master Admin Routes */}
             <Route 
               path="/master" 
@@ -198,6 +182,32 @@ const App = () => (
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
                   <AlertsPage />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* Financial Routes */}
+            <Route 
+              path="/master/financial" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <FinancialDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/master/transactions" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <FinancialTransactions />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/master/payouts" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <PayoutManagement />
                 </ProtectedRoute>
               } 
             />
