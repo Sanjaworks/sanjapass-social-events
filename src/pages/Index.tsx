@@ -15,14 +15,14 @@ const Index = () => {
     setFeaturedEvents(events);
   }, []);
   
-  // Converter eventos para o formato esperado pelo HeroParallax
+  // Convert events to the HeroParallax expected format
   const heroProducts = events.map(event => ({
     title: event.title,
     link: `/events/${event.id}`,
     thumbnail: event.bannerUrl
   }));
   
-  // Preencher mais itens se necessário para ter 15 itens
+  // Fill with more items if needed to have 15 items
   const fillerItems = [
     {
       title: "SanjaPass Festival",
@@ -48,14 +48,10 @@ const Index = () => {
   
   return (
     <MainLayout>
-      {/* Hero Parallax Section */}
-      <div className="min-h-screen w-full">
-        <div className="absolute top-0 left-0 w-full z-10">
-          <HeroParallax products={products} />
-        </div>
-      </div>
+      {/* Hero Parallax Section - Now directly below header */}
+      <HeroParallax products={products} />
       
-      <div className="mt-[280vh]"> {/* Espaço para o parallax */}
+      <div className="mt-[140vh]"> {/* Adjusted space for the parallax */}
         {/* Features Section */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">

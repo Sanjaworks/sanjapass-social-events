@@ -1,11 +1,13 @@
 
 "use client";
-import React from "react";
+import React, { useRef } from "react";
 import {
   motion,
   useScroll,
   useTransform,
   useSpring,
+  useMotionValue,
+  useAnimationFrame,
   MotionValue,
 } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -22,22 +24,19 @@ export const HeroParallax = ({
   const firstRow = products.slice(0, 5);
   const secondRow = products.slice(5, 10);
   const thirdRow = products.slice(10, 15);
-  const ref = React.useRef(null);
+  const ref = useRef(null);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
 
-  const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
+  const springConfig = { stiffness: 300, damping: 30 };
 
-  const translateX = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, 1000]),
-    springConfig
-  );
-  const translateXReverse = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, -1000]),
-    springConfig
-  );
+  // Scroll-based animations
+  const translateX = useTransform(scrollYProgress, [0, 1], [0, 1000]);
+  const translateXReverse = useTransform(scrollYProgress, [0, 1], [0, -1000]);
+
   const rotateX = useSpring(
     useTransform(scrollYProgress, [0, 0.2], [15, 0]),
     springConfig
@@ -51,13 +50,20 @@ export const HeroParallax = ({
     springConfig
   );
   const translateY = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [-700, 500]),
+    useTransform(scrollYProgress, [0, 0.2], [-400, 200]),
     springConfig
   );
+
+  // Continuous horizontal movement
+  const continuousMove = useMotionValue(0);
+  useAnimationFrame(() => {
+    continuousMove.set(continuousMove.get() - 0.5); // Adjust this value for speed
+  });
+
   return (
     <div
       ref={ref}
-      className="h-[300vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="min-h-screen pb-20 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       <Header />
       <motion.div
@@ -69,30 +75,33 @@ export const HeroParallax = ({
         }}
         className=""
       >
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-20 mb-20">
+        <motion.div className="flex flex-row-reverse space-x-reverse space-x-8 mb-8">
           {firstRow.map((product) => (
             <ProductCard
+              key={product.title}
               product={product}
               translate={translateX}
-              key={product.title}
+              continuousMove={continuousMove}
             />
           ))}
         </motion.div>
-        <motion.div className="flex flex-row mb-20 space-x-20">
+        <motion.div className="flex flex-row mb-8 space-x-8">
           {secondRow.map((product) => (
             <ProductCard
+              key={product.title}
               product={product}
               translate={translateXReverse}
-              key={product.title}
+              continuousMove={continuousMove}
             />
           ))}
         </motion.div>
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-20">
+        <motion.div className="flex flex-row-reverse space-x-reverse space-x-8">
           {thirdRow.map((product) => (
             <ProductCard
+              key={product.title}
               product={product}
               translate={translateX}
-              key={product.title}
+              continuousMove={continuousMove}
             />
           ))}
         </motion.div>
@@ -103,11 +112,11 @@ export const HeroParallax = ({
 
 export const Header = () => {
   return (
-    <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full left-0 top-0">
-      <h1 className="text-2xl md:text-7xl font-bold dark:text-white">
+    <div className="max-w-7xl relative mx-auto py-10 md:py-20 px-4 w-full left-0 top-0">
+      <h1 className="text-2xl md:text-6xl font-bold dark:text-white">
         SanjaPass <br /> A plataforma completa para seus eventos
       </h1>
-      <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200">
+      <p className="max-w-2xl text-sm md:text-lg mt-4 dark:text-neutral-200">
         Compre ingressos, participe de eventos e compartilhe suas melhores experiências.
         Somos a plataforma que conecta você aos melhores eventos da sua região.
       </p>
@@ -118,6 +127,7 @@ export const Header = () => {
 export const ProductCard = ({
   product,
   translate,
+  continuousMove,
 }: {
   product: {
     title: string;
@@ -125,17 +135,18 @@ export const ProductCard = ({
     thumbnail: string;
   };
   translate: MotionValue<number>;
+  continuousMove: MotionValue<number>;
 }) => {
   return (
     <motion.div
       style={{
         x: translate,
+        translateX: continuousMove,
       }}
       whileHover={{
         y: -20,
       }}
-      key={product.title}
-      className="group/product h-96 w-[30rem] relative flex-shrink-0"
+      className="group/product h-80 w-[25rem] relative flex-shrink-0"
     >
       <Link
         to={product.link}
