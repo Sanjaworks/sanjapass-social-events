@@ -9,6 +9,8 @@ import { events, Event } from '@/data/mockData';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { TestimonialsSection } from '@/components/ui/testimonials-with-marquee';
+import { EventCategories } from '@/components/ui/event-categories';
 
 const Index = () => {
   const [featuredEvents, setFeaturedEvents] = useState<Event[]>([]);
@@ -81,12 +83,76 @@ const Index = () => {
     },
   ];
   
+  // Testimonial data
+  const testimonials = [
+    {
+      author: {
+        name: "Mariana Alves",
+        handle: "@marialves",
+        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face"
+      },
+      text: "O SanjaPass facilitou muito minha vida! Comprei ingressos para 3 eventos diferentes e o processo foi super rápido. Recomendo demais!",
+      href: "#"
+    },
+    {
+      author: {
+        name: "Ricardo Santos",
+        handle: "@ricardinho",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+      },
+      text: "Como organizador de eventos, o SanjaPass me ajudou a aumentar a visibilidade e as vendas dos meus eventos. A plataforma é incrível!",
+      href: "#"
+    },
+    {
+      author: {
+        name: "Juliana Ferreira",
+        handle: "@juhferreira",
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face"
+      },
+      text: "Adoro poder compartilhar fotos dos eventos e ver o que outras pessoas estão curtindo. A parte social do SanjaPass é demais!"
+    }
+  ];
+
   return (
     <MainLayout>
       {/* Hero Parallax Section - Directly below header */}
       <HeroParallax products={products} />
       
-      <div> {/* No more mt-[140vh] to fix spacing */}
+      <div>
+        {/* Featured Events */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold">Eventos em destaque</h2>
+              <Link to="/events" className="text-primary hover:text-primary/80 font-medium">
+                Ver todos
+              </Link>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredEvents.slice(0, 6).map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+            
+            {featuredEvents.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-gray-500">Carregando eventos...</p>
+              </div>
+            )}
+          </div>
+        </section>
+        
+        {/* Testimonials Section */}
+        <TestimonialsSection
+          title="O que nossos usuários dizem"
+          description="Junte-se a milhares de pessoas que já aproveitam a melhor experiência em eventos"
+          testimonials={testimonials}
+        />
+
+        {/* Event Categories */}
+        <EventCategories />
+
         {/* Instagram-like Feed Section */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
@@ -166,30 +232,6 @@ const Index = () => {
                 </p>
               </div>
             </div>
-          </div>
-        </section>
-        
-        {/* Featured Events */}
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold">Eventos em destaque</h2>
-              <Link to="/events" className="text-primary hover:text-primary/80 font-medium">
-                Ver todos
-              </Link>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredEvents.slice(0, 6).map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
-            </div>
-            
-            {featuredEvents.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-gray-500">Carregando eventos...</p>
-              </div>
-            )}
           </div>
         </section>
         
