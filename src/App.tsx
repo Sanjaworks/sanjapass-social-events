@@ -15,6 +15,7 @@ import GalleryPage from "./pages/GalleryPage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
 import RegisterPage from "./pages/RegisterPage";
+import ComoFunciona from "./pages/ComoFunciona";
 
 // Dashboard Pages
 import CustomerDashboard from "./pages/dashboard/CustomerDashboard";
@@ -71,6 +72,7 @@ const App = () => (
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/como-funciona" element={<ComoFunciona />} />
             
             {/* Customer Routes */}
             <Route 
