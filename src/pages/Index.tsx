@@ -1,11 +1,14 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { CalendarCheck, Users, Image } from 'lucide-react';
+import { CalendarCheck, Users, Image, Instagram, Camera } from 'lucide-react';
 import MainLayout from '@/components/layout/MainLayout';
 import EventCard from '@/components/events/EventCard';
 import { HeroParallax } from '@/components/blocks/hero-parallax';
 import { events, Event } from '@/data/mockData';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 const Index = () => {
   const [featuredEvents, setFeaturedEvents] = useState<Event[]>([]);
@@ -45,15 +48,89 @@ const Index = () => {
   while (products.length < 15) {
     products.push(fillerItems[products.length % fillerItems.length]);
   }
+
+  // Mock photos for the Instagram-like feed
+  const instaSanjaPhotos = [
+    {
+      id: 1,
+      imageUrl: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=1770&auto=format&fit=crop",
+      user: "maria_silva",
+      likes: 124,
+      eventName: "Rock in Rio"
+    },
+    {
+      id: 2,
+      imageUrl: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=1770&auto=format&fit=crop",
+      user: "joao_santos",
+      likes: 89,
+      eventName: "Festival de Verão"
+    },
+    {
+      id: 3,
+      imageUrl: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1770&auto=format&fit=crop",
+      user: "ana_costa",
+      likes: 156,
+      eventName: "Feira Gastronômica"
+    },
+    {
+      id: 4,
+      imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1770&auto=format&fit=crop",
+      user: "carlos_oliveira",
+      likes: 72,
+      eventName: "Exposição de Arte"
+    },
+  ];
   
   return (
     <MainLayout>
       {/* Hero Parallax Section - Directly below header */}
       <HeroParallax products={products} />
       
-      <div className="mt-[140vh]"> {/* Space for the parallax */}
-        {/* Features Section */}
+      <div> {/* No more mt-[140vh] to fix spacing */}
+        {/* Instagram-like Feed Section */}
         <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-3xl font-bold">InstaSanja</h2>
+                <p className="text-gray-600 mt-2">Compartilhe suas experiências nos eventos</p>
+              </div>
+              <Link to="/gallery" className="flex items-center gap-2 text-primary">
+                <Instagram className="h-5 w-5" />
+                <span>Ver galeria completa</span>
+              </Link>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {instaSanjaPhotos.map(photo => (
+                <div key={photo.id} className="relative group overflow-hidden rounded-lg">
+                  <img 
+                    src={photo.imageUrl} 
+                    alt={`Foto de ${photo.user}`} 
+                    className="w-full aspect-square object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-semibold">@{photo.user}</span>
+                      <span className="text-sm">• {photo.likes} likes</span>
+                    </div>
+                    <p className="text-sm opacity-90">{photo.eventName}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="mt-8 text-center">
+              <Button variant="outline" className="border-primary text-primary hover:bg-primary/10">
+                <Camera className="mr-2 h-4 w-4" />
+                Faça upload das suas fotos
+              </Button>
+            </div>
+          </div>
+        </section>
+        
+        {/* Features Section */}
+        <section className="py-16 bg-page">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12">Como funciona o SanjaPass</h2>
             
@@ -93,7 +170,7 @@ const Index = () => {
         </section>
         
         {/* Featured Events */}
-        <section className="py-16 bg-page">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-2xl md:text-3xl font-bold">Eventos em destaque</h2>
@@ -103,7 +180,7 @@ const Index = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredEvents.map((event) => (
+              {featuredEvents.slice(0, 6).map((event) => (
                 <EventCard key={event.id} event={event} />
               ))}
             </div>
@@ -113,6 +190,67 @@ const Index = () => {
                 <p className="text-gray-500">Carregando eventos...</p>
               </div>
             )}
+          </div>
+        </section>
+        
+        {/* Contact Form Section */}
+        <section className="py-16 bg-page">
+          <div className="container mx-auto px-4">
+            <div className="bg-white rounded-2xl shadow-lg p-8">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold">Entre em contato</h2>
+                <p className="text-gray-600 mt-2">Tire suas dúvidas ou envie sugestões</p>
+              </div>
+              
+              <form className="max-w-2xl mx-auto space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+                    <input
+                      type="text"
+                      id="name"
+                      className="input-field w-full"
+                      placeholder="Seu nome"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      className="input-field w-full"
+                      placeholder="seu.email@exemplo.com"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Assunto</label>
+                  <input
+                    type="text"
+                    id="subject"
+                    className="input-field w-full"
+                    placeholder="Assunto da mensagem"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Mensagem</label>
+                  <textarea
+                    id="message"
+                    rows={5}
+                    className="input-field w-full resize-none"
+                    placeholder="Escreva sua mensagem aqui..."
+                  ></textarea>
+                </div>
+                
+                <div className="text-center">
+                  <Button className="bg-primary text-white py-2 px-6 rounded-md hover:bg-primary/90">
+                    Enviar mensagem
+                  </Button>
+                </div>
+              </form>
+            </div>
           </div>
         </section>
         
