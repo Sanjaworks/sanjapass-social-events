@@ -54,10 +54,10 @@ export const HeroParallax = ({
     springConfig
   );
 
-  // Continuous horizontal movement
+  // Movimento horizontal contínuo (infinito)
   const continuousMove = useMotionValue(0);
   useAnimationFrame(() => {
-    continuousMove.set(continuousMove.get() - 0.5); // Adjust this value for speed
+    continuousMove.set((continuousMove.get() + 5) % 1000); // Loop infinito
   });
 
   return (

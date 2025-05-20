@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CalendarCheck, Users, Image } from 'lucide-react';
@@ -48,16 +47,17 @@ const Index = () => {
   
   return (
     <MainLayout>
-      {/* Hero Parallax Section - Now directly below header */}
+      {/* Hero Parallax Section - Directly below header */}
       <HeroParallax products={products} />
       
-      <div className="mt-[140vh]"> {/* Adjusted space for the parallax */}
+      <div className="mt-[140vh]"> {/* Space for the parallax */}
         {/* Features Section */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12">Como funciona o SanjaPass</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              
               <div className="flex flex-col items-center text-center p-6 animate-fadeIn">
                 <div className="bg-primary/10 p-4 rounded-full mb-4">
                   <CalendarCheck className="h-10 w-10 text-primary" />
