@@ -21,9 +21,13 @@ export const HeroParallax = ({
     thumbnail: string;
   }[];
 }) => {
-  const firstRow = products.slice(0, 5);
-  const secondRow = products.slice(5, 10);
-  const thirdRow = products.slice(10, 15);
+  // Duplica os produtos para criar o efeito infinito
+  const duplicatedProducts = [...products, ...products];
+
+  const firstRow = duplicatedProducts.slice(0, 10);
+  const secondRow = duplicatedProducts.slice(10, 20);
+  const thirdRow = duplicatedProducts.slice(20, 30);
+
   const ref = useRef(null);
 
   const { scrollYProgress } = useScroll({
@@ -57,13 +61,13 @@ export const HeroParallax = ({
   // Movimento horizontal contínuo (infinito)
   const continuousMove = useMotionValue(0);
   useAnimationFrame(() => {
-    continuousMove.set((continuousMove.get() + 5) % 1000); // Loop infinito
+    continuousMove.set((continuousMove.get() + 0.5) % 100); // velocidade do movimento
   });
 
   return (
     <div
       ref={ref}
-      className="min-h-screen pb-20 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="min-h-screen pb-10 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       <Header />
       <motion.div
@@ -75,20 +79,20 @@ export const HeroParallax = ({
         }}
         className=""
       >
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-8 mb-8">
-          {firstRow.map((product) => (
+        <motion.div className="flex flex-row-reverse space-x-reverse space-x-8 mb-6">
+          {firstRow.map((product, idx) => (
             <ProductCard
-              key={product.title}
+              key={`${product.title}-${idx}`}
               product={product}
               translate={translateX}
               continuousMove={continuousMove}
             />
           ))}
         </motion.div>
-        <motion.div className="flex flex-row mb-8 space-x-8">
-          {secondRow.map((product) => (
+        <motion.div className="flex flex-row mb-6 space-x-8">
+          {secondRow.map((product, idx) => (
             <ProductCard
-              key={product.title}
+              key={`${product.title}-${idx}`}
               product={product}
               translate={translateXReverse}
               continuousMove={continuousMove}
@@ -96,9 +100,9 @@ export const HeroParallax = ({
           ))}
         </motion.div>
         <motion.div className="flex flex-row-reverse space-x-reverse space-x-8">
-          {thirdRow.map((product) => (
+          {thirdRow.map((product, idx) => (
             <ProductCard
-              key={product.title}
+              key={`${product.title}-${idx}`}
               product={product}
               translate={translateX}
               continuousMove={continuousMove}
@@ -112,11 +116,11 @@ export const HeroParallax = ({
 
 export const Header = () => {
   return (
-    <div className="max-w-7xl relative mx-auto py-10 md:py-20 px-4 w-full left-0 top-0">
-      <h1 className="text-2xl md:text-6xl font-bold dark:text-white">
+    <div className="max-w-7xl relative mx-auto py-10 md:py-16 px-4 w-full left-0 top-0">
+      <h1 className="text-2xl md:text-5xl font-bold dark:text-white">
         SanjaPass <br /> A plataforma completa para seus eventos
       </h1>
-      <p className="max-w-2xl text-sm md:text-lg mt-4 dark:text-neutral-200">
+      <p className="max-w-2xl text-sm md:text-base mt-4 dark:text-neutral-200">
         Compre ingressos, participe de eventos e compartilhe suas melhores experiências.
         Somos a plataforma que conecta você aos melhores eventos da sua região.
       </p>
@@ -146,7 +150,7 @@ export const ProductCard = ({
       whileHover={{
         y: -20,
       }}
-      className="group/product h-80 w-[25rem] relative flex-shrink-0"
+      className="group/product h-72 w-[22rem] relative flex-shrink-0"
     >
       <Link
         to={product.link}
@@ -159,7 +163,7 @@ export const ProductCard = ({
         />
       </Link>
       <div className="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black pointer-events-none"></div>
-      <h2 className="absolute bottom-4 left-4 opacity-0 group-hover/product:opacity-100 text-white">
+      <h2 className="absolute bottom-4 left-4 opacity-0 group-hover/product:opacity-100 text-white text-sm">
         {product.title}
       </h2>
     </motion.div>

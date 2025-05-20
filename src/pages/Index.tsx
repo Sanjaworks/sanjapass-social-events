@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CalendarCheck, Users, Image } from 'lucide-react';
@@ -21,7 +22,7 @@ const Index = () => {
     thumbnail: event.bannerUrl
   }));
   
-  // Fill with more items if needed to have 15 items
+  // Fill with more items if needed to have enough items for duplication
   const fillerItems = [
     {
       title: "SanjaPass Festival",
