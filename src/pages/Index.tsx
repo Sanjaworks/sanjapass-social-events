@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { CalendarCheck, Users, Image, Instagram, Camera } from 'lucide-react';
+import { CalendarCheck, Users, Image, Instagram, Camera, Search, PlusCircle } from 'lucide-react';
 import MainLayout from '@/components/layout/MainLayout';
 import EventCard from '@/components/events/EventCard';
 import { HeroParallax } from '@/components/blocks/hero-parallax';
@@ -11,13 +11,30 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { TestimonialsSection } from '@/components/ui/testimonials-with-marquee';
 import { EventCategories } from '@/components/ui/event-categories';
+import PartnersCarousel from '@/components/partners/PartnersCarousel';
 
 const Index = () => {
   const [featuredEvents, setFeaturedEvents] = useState<Event[]>([]);
+  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
+  const [popularEvents, setPopularEvents] = useState<Event[]>([]);
   
   useEffect(() => {
     // Simulate fetching events
-    setFeaturedEvents(events);
+    setFeaturedEvents(events.filter(event => event.featured));
+    
+    // Get upcoming events (sorted by date)
+    const upcoming = [...events].sort((a, b) => {
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    });
+    setUpcomingEvents(upcoming);
+    
+    // Get popular events (sorted by remaining tickets - fewer remaining = more popular)
+    const popular = [...events].sort((a, b) => {
+      const aRemaining = a.tickets.reduce((sum, ticket) => sum + ticket.remaining, 0);
+      const bRemaining = b.tickets.reduce((sum, ticket) => sum + ticket.remaining, 0);
+      return aRemaining - bRemaining;
+    });
+    setPopularEvents(popular);
   }, []);
   
   // Convert events to the HeroParallax expected format
@@ -115,8 +132,27 @@ const Index = () => {
 
   return (
     <MainLayout>
-      {/* Hero Parallax Section - Directly below header */}
-      <HeroParallax products={products} />
+      {/* Hero Parallax Section with Centered Content */}
+      <div className="relative">
+        <HeroParallax products={products} />
+        
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 z-10">
+          <div className="text-center text-white px-4">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4">SanjaPass</h1>
+            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+              A plataforma completa para criar, divulgar e viver experiências incríveis em São José dos Campos
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="bg-primary text-white hover:bg-primary/90">
+                <PlusCircle className="mr-2 h-5 w-5" /> Crie seu Evento
+              </Button>
+              <Button size="lg" variant="outline" className="bg-white text-primary border-white hover:bg-white/90">
+                <Search className="mr-2 h-5 w-5" /> Busque seu Rolê Aqui!
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
       
       {/* Event Categories - Now directly below hero */}
       <EventCategories />
@@ -194,14 +230,53 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Testimonials Section - Moved after How SanjaPass Works */}
+        {/* Testimonials Section */}
         <TestimonialsSection
           title="O que nossos usuários dizem"
           description="Junte-se a milhares de pessoas que já aproveitam a melhor experiência em eventos"
           testimonials={testimonials}
         />
         
-        {/* Organizer CTA Section */}
+        {/* Upcoming Events Section */}
+        <section className="py-16 bg-page">
+          <div className="container mx-auto px-4">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold">Próximos eventos</h2>
+              <Link to="/events" className="text-primary hover:text-primary/80 font-medium">
+                Ver todos
+              </Link>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {upcomingEvents.slice(0, 4).map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+          </div>
+        </section>
+        
+        {/* Partners Carousel */}
+        <PartnersCarousel />
+        
+        {/* Popular Events Section */}
+        <section className="py-16 bg-page">
+          <div className="container mx-auto px-4">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold">Eventos populares</h2>
+              <Link to="/events" className="text-primary hover:text-primary/80 font-medium">
+                Ver todos
+              </Link>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {popularEvents.slice(0, 3).map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+          </div>
+        </section>
+        
+        {/* Organizer CTA Section with animated graphic */}
         <section className="py-16 bg-[#f0f0ff]">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -245,12 +320,28 @@ const Index = () => {
                 </div>
               </div>
               
-              <div className="hidden md:block">
-                <img 
-                  src="/lovable-uploads/e95d4e59-d092-42db-8844-b741fb63999e.png" 
-                  alt="Dashboard de eventos" 
-                  className="w-full rounded-lg shadow-xl"
-                />
+              <div className="hidden md:block relative">
+                <div className="relative z-10">
+                  <img 
+                    src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&auto=format&fit=crop" 
+                    alt="Evento" 
+                    className="rounded-lg shadow-xl w-full h-80 object-cover"
+                  />
+                </div>
+                <div className="absolute top-10 right-10 z-20 w-48 h-48 bg-white p-3 rounded-lg shadow-lg rotate-6 animate-bounce" style={{ animationDuration: '5s' }}>
+                  <img 
+                    src="https://images.unsplash.com/photo-1553775282-20af80779df7?w=400&auto=format&fit=crop" 
+                    alt="Gráfico de vendas" 
+                    className="w-full h-full object-cover rounded"
+                  />
+                </div>
+                <div className="absolute -bottom-5 -left-5 z-20 w-36 h-36 bg-white p-3 rounded-lg shadow-lg -rotate-6 animate-bounce" style={{ animationDuration: '6s', animationDelay: '0.5s' }}>
+                  <img 
+                    src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&auto=format&fit=crop" 
+                    alt="Análise de dados" 
+                    className="w-full h-full object-cover rounded"
+                  />
+                </div>
               </div>
             </div>
           </div>

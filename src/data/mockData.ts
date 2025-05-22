@@ -1,4 +1,3 @@
-
 export interface Event {
   id: string;
   title: string;
@@ -437,3 +436,391 @@ export const galleryPhotos: Photo[] = [
 export const generateQRCode = (ticketId: string) => {
   return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${ticketId}`;
 };
+
+// Adding 10 more events to the existing mock data
+export const additionalEvents: Event[] = [
+  {
+    id: "11",
+    title: "Festival de Jazz na Praia",
+    date: "2023-12-10",
+    description: "Um dia inteiro de jazz à beira-mar com artistas renomados e novos talentos.",
+    bannerUrl: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&auto=format&fit=crop",
+    location: {
+      name: "Praia Grande",
+      address: "Av. Presidente Castelo Branco",
+      city: "Santos",
+      state: "SP",
+      postalCode: "11100-000"
+    },
+    tickets: [
+      {
+        id: "111",
+        name: "Entrada Comum",
+        description: "Acesso a todas as áreas do festival",
+        price: 120.00,
+        quantity: 500,
+        remaining: 125
+      },
+      {
+        id: "112",
+        name: "Premium",
+        description: "Acesso a todas as áreas + área VIP com open bar",
+        price: 250.00,
+        quantity: 100,
+        remaining: 15
+      }
+    ],
+    category: "Música",
+    featured: true,
+    organizerId: "3"
+  },
+  {
+    id: "12",
+    title: "Workshop de Fotografia",
+    date: "2023-12-15",
+    description: "Aprenda técnicas avançadas de fotografia com profissionais premiados.",
+    bannerUrl: "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&auto=format&fit=crop",
+    location: {
+      name: "Estúdio Luz",
+      address: "Rua das Artes, 123",
+      city: "São José dos Campos",
+      state: "SP",
+      postalCode: "12230-000"
+    },
+    tickets: [
+      {
+        id: "121",
+        name: "Participante",
+        description: "Acesso ao workshop + material digital",
+        price: 180.00,
+        quantity: 30,
+        remaining: 8
+      }
+    ],
+    category: "Educação",
+    featured: false,
+    organizerId: "2"
+  },
+  {
+    id: "13",
+    title: "Feira Gastronômica Internacional",
+    date: "2023-12-18",
+    description: "Experimente sabores de todo o mundo em um único lugar.",
+    bannerUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&auto=format&fit=crop",
+    location: {
+      name: "Parque da Cidade",
+      address: "Av. Central",
+      city: "São José dos Campos",
+      state: "SP",
+      postalCode: "12225-000"
+    },
+    tickets: [
+      {
+        id: "131",
+        name: "Entrada",
+        description: "Acesso à feira (consumo à parte)",
+        price: 30.00,
+        quantity: 1000,
+        remaining: 600
+      },
+      {
+        id: "132",
+        name: "Passaporte Gourmet",
+        description: "Inclui degustação em 5 estandes selecionados",
+        price: 85.00,
+        quantity: 200,
+        remaining: 75
+      }
+    ],
+    category: "Gastronomia",
+    featured: true,
+    organizerId: "1"
+  },
+  {
+    id: "14",
+    title: "Corrida Beneficente 5K",
+    date: "2023-12-20",
+    description: "Participe desta corrida e ajude instituições de caridade locais.",
+    bannerUrl: "https://images.unsplash.com/photo-1509255929945-586a420363cf?w=800&auto=format&fit=crop",
+    location: {
+      name: "Parque Santos Dumont",
+      address: "Av. Olivo Gomes",
+      city: "São José dos Campos",
+      state: "SP",
+      postalCode: "12227-010"
+    },
+    tickets: [
+      {
+        id: "141",
+        name: "Inscrição",
+        description: "Kit corrida + medalha de participação",
+        price: 65.00,
+        quantity: 300,
+        remaining: 120
+      }
+    ],
+    category: "Esportes",
+    featured: false,
+    organizerId: "3"
+  },
+  {
+    id: "15",
+    title: "Festival de Teatro Independente",
+    date: "2023-12-25",
+    description: "Apresentações de grupos teatrais independentes com peças inovadoras.",
+    bannerUrl: "https://images.unsplash.com/photo-1503095396549-807759245b35?w=800&auto=format&fit=crop",
+    location: {
+      name: "Teatro Municipal",
+      address: "Praça Afonso Pena, 50",
+      city: "São José dos Campos",
+      state: "SP",
+      postalCode: "12210-090"
+    },
+    tickets: [
+      {
+        id: "151",
+        name: "Ingresso Regular",
+        description: "Acesso a todas as apresentações do dia",
+        price: 45.00,
+        quantity: 200,
+        remaining: 160
+      },
+      {
+        id: "152",
+        name: "Pacote Festival",
+        description: "Acesso a todas as apresentações durante os 3 dias",
+        price: 110.00,
+        quantity: 50,
+        remaining: 22
+      }
+    ],
+    category: "Arte e Cultura",
+    featured: true,
+    organizerId: "2"
+  },
+  {
+    id: "16",
+    title: "Encontro de Colecionadores de Vinil",
+    date: "2024-01-05",
+    description: "Traga seus discos e troque com outros colecionadores neste evento único.",
+    bannerUrl: "https://images.unsplash.com/photo-1502773860571-211a597d6e4b?w=800&auto=format&fit=crop",
+    location: {
+      name: "Centro Cultural",
+      address: "Rua Rubião Júnior, 84",
+      city: "São José dos Campos",
+      state: "SP",
+      postalCode: "12210-180"
+    },
+    tickets: [
+      {
+        id: "161",
+        name: "Visitante",
+        description: "Acesso ao evento",
+        price: 15.00,
+        quantity: 150,
+        remaining: 112
+      },
+      {
+        id: "162",
+        name: "Expositor",
+        description: "Mesa para exposição/venda de itens",
+        price: 60.00,
+        quantity: 30,
+        remaining: 5
+      }
+    ],
+    category: "Música",
+    featured: false,
+    organizerId: "1"
+  },
+  {
+    id: "17",
+    title: "Hackathon: Tecnologia para Cidades Inteligentes",
+    date: "2024-01-10",
+    description: "48 horas de imersão para desenvolver soluções tecnológicas para problemas urbanos.",
+    bannerUrl: "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?w=800&auto=format&fit=crop",
+    location: {
+      name: "Hub de Inovação",
+      address: "Av. Dr. Sebastião Henrique da Cunha Pontes, 8000",
+      city: "São José dos Campos",
+      state: "SP",
+      postalCode: "12237-823"
+    },
+    tickets: [
+      {
+        id: "171",
+        name: "Participante",
+        description: "Acesso ao evento + alimentação durante os 2 dias",
+        price: 0.00,
+        quantity: 100,
+        remaining: 32
+      }
+    ],
+    category: "Negócios",
+    featured: true,
+    organizerId: "3"
+  },
+  {
+    id: "18",
+    title: "Festival de Cerveja Artesanal",
+    date: "2024-01-15",
+    description: "Deguste as melhores cervejas artesanais da região com música ao vivo.",
+    bannerUrl: "https://images.unsplash.com/photo-1575367439058-6096bb9cf5e2?w=800&auto=format&fit=crop",
+    location: {
+      name: "Parque Vicentina Aranha",
+      address: "R. Eng. Prudente Meireles de Morais, 302",
+      city: "São José dos Campos",
+      state: "SP",
+      postalCode: "12210-000"
+    },
+    tickets: [
+      {
+        id: "181",
+        name: "Entrada",
+        description: "Inclui copo personalizado e 2 fichas de degustação",
+        price: 50.00,
+        quantity: 500,
+        remaining: 187
+      },
+      {
+        id: "182",
+        name: "Premium",
+        description: "Inclui copo personalizado, 5 fichas de degustação e acesso à área VIP",
+        price: 120.00,
+        quantity: 100,
+        remaining: 37
+      }
+    ],
+    category: "Gastronomia",
+    featured: false,
+    organizerId: "2"
+  },
+  {
+    id: "19",
+    title: "Palestra: Inteligência Artificial e o Futuro do Trabalho",
+    date: "2024-01-20",
+    description: "Discussão com especialistas sobre como a IA está transformando o mercado de trabalho.",
+    bannerUrl: "https://images.unsplash.com/photo-1558403194-611308249627?w=800&auto=format&fit=crop",
+    location: {
+      name: "Auditório da Universidade",
+      address: "Av. Shishima Hifumi, 2911",
+      city: "São José dos Campos",
+      state: "SP",
+      postalCode: "12244-000"
+    },
+    tickets: [
+      {
+        id: "191",
+        name: "Entrada Regular",
+        description: "Acesso à palestra",
+        price: 35.00,
+        quantity: 150,
+        remaining: 83
+      },
+      {
+        id: "192",
+        name: "Estudante",
+        description: "Acesso à palestra (necessária comprovação)",
+        price: 17.50,
+        quantity: 100,
+        remaining: 42
+      }
+    ],
+    category: "Educação",
+    featured: true,
+    organizerId: "1"
+  },
+  {
+    id: "20",
+    title: "Retiro de Yoga e Meditação",
+    date: "2024-01-25",
+    description: "Um fim de semana de reconexão com a natureza e práticas de bem-estar.",
+    bannerUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&auto=format&fit=crop",
+    location: {
+      name: "Pousada Serenidade",
+      address: "Estrada do Monte Verde, Km 5",
+      city: "Monteiro Lobato",
+      state: "SP",
+      postalCode: "12250-000"
+    },
+    tickets: [
+      {
+        id: "201",
+        name: "Pacote Completo",
+        description: "2 diárias com hospedagem, alimentação e todas as atividades",
+        price: 750.00,
+        quantity: 30,
+        remaining: 12
+      },
+      {
+        id: "202",
+        name: "Day Use",
+        description: "Acesso às atividades por um dia (sem hospedagem)",
+        price: 180.00,
+        quantity: 20,
+        remaining: 8
+      }
+    ],
+    category: "Saúde e Bem-estar",
+    featured: false,
+    organizerId: "3"
+  }
+];
+
+// Combine original events with additional events
+export const allEvents = [...events, ...additionalEvents];
+
+// Partners data for the carousel
+export const partners = [
+  {
+    id: 1,
+    name: "PrefeituraSJC",
+    logo: "https://images.unsplash.com/photo-1566125882500-87e10f726cdc?w=800&auto=format&fit=crop",
+    description: "Prefeitura de São José dos Campos"
+  },
+  {
+    id: 2,
+    name: "SpaceX",
+    logo: "https://images.unsplash.com/photo-1518364538800-6bae3c2ea0f2?w=800&auto=format&fit=crop",
+    description: "SpaceX"
+  },
+  {
+    id: 3,
+    name: "Embraer",
+    logo: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&auto=format&fit=crop",
+    description: "Embraer"
+  },
+  {
+    id: 4,
+    name: "Parque Tecnológico",
+    logo: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format&fit=crop",
+    description: "Parque Tecnológico SJC"
+  },
+  {
+    id: 5,
+    name: "INPE",
+    logo: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&auto=format&fit=crop",
+    description: "Instituto Nacional de Pesquisas Espaciais"
+  },
+  {
+    id: 6,
+    name: "UNESP",
+    logo: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&auto=format&fit=crop",
+    description: "Universidade Estadual Paulista"
+  },
+  {
+    id: 7,
+    name: "ITA",
+    logo: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&auto=format&fit=crop",
+    description: "Instituto Tecnológico de Aeronáutica"
+  },
+  {
+    id: 8,
+    name: "CTA",
+    logo: "https://images.unsplash.com/photo-1572947650440-e8a97ef053b2?w=800&auto=format&fit=crop",
+    description: "Centro Técnico Aeroespacial"
+  }
+];
+
+// Update the events export to use allEvents
+export { allEvents as events };
