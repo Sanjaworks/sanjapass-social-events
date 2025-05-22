@@ -1,3 +1,4 @@
+
 export interface Event {
   id: string;
   title: string;
@@ -154,6 +155,7 @@ export const events: Event[] = [
         uploadDate: '2024-07-17T10:05:00Z',
       },
     ],
+    featured: true,
   },
   {
     id: '2',
@@ -228,6 +230,7 @@ export const events: Event[] = [
         uploadDate: '2024-06-11T09:15:00Z',
       },
     ],
+    featured: false,
   },
   {
     id: '3',
@@ -292,6 +295,7 @@ export const events: Event[] = [
         uploadDate: '2024-08-26T09:15:00Z',
       },
     ],
+    featured: false,
   },
 ];
 
@@ -875,9 +879,6 @@ const additionalEvents: Event[] = [
   }
 ];
 
-// Combine original events with additional events
-export const allEvents = [...events, ...additionalEvents];
-
 // Partners data for the carousel
 export const partners = [
   {
@@ -930,5 +931,8 @@ export const partners = [
   }
 ];
 
-// Use allEvents instead of redefining events
-export { allEvents as events };
+// Combine original events with additional events
+export const allEvents = [...events, ...additionalEvents];
+
+// Export allEvents as the main events data
+export { allEvents as eventsData };
