@@ -23,6 +23,7 @@ export interface Event {
   };
   tickets: Ticket[];
   gallery: Photo[];
+  featured?: boolean; // Added featured property
 }
 
 export interface Ticket {
@@ -276,7 +277,7 @@ export const events: Event[] = [
         eventId: '3',
         userId: '1006',
         userName: 'Fernanda Castro',
-        photoUrl: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+        photoUrl: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
         caption: 'Noite de risadas!',
         likes: 67,
         uploadDate: '2024-08-26T10:42:00Z',
@@ -438,11 +439,13 @@ export const generateQRCode = (ticketId: string) => {
 };
 
 // Adding 10 more events to the existing mock data
-export const additionalEvents: Event[] = [
+const additionalEvents: Event[] = [
   {
     id: "11",
     title: "Festival de Jazz na Praia",
     date: "2023-12-10",
+    startTime: "16:00",
+    endTime: "23:00",
     description: "Um dia inteiro de jazz à beira-mar com artistas renomados e novos talentos.",
     bannerUrl: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&auto=format&fit=crop",
     location: {
@@ -450,7 +453,10 @@ export const additionalEvents: Event[] = [
       address: "Av. Presidente Castelo Branco",
       city: "Santos",
       state: "SP",
-      postalCode: "11100-000"
+      coordinates: {
+        lat: -23.967896,
+        lng: -46.332636
+      }
     },
     tickets: [
       {
@@ -459,7 +465,8 @@ export const additionalEvents: Event[] = [
         description: "Acesso a todas as áreas do festival",
         price: 120.00,
         quantity: 500,
-        remaining: 125
+        remaining: 125,
+        batch: "1º Lote"
       },
       {
         id: "112",
@@ -467,17 +474,24 @@ export const additionalEvents: Event[] = [
         description: "Acesso a todas as áreas + área VIP com open bar",
         price: 250.00,
         quantity: 100,
-        remaining: 15
+        remaining: 15,
+        batch: "Lote Único"
       }
     ],
-    category: "Música",
+    category: "music",
     featured: true,
-    organizerId: "3"
+    organizer: {
+      id: "3",
+      name: "Risos Produções"
+    },
+    gallery: []
   },
   {
     id: "12",
     title: "Workshop de Fotografia",
     date: "2023-12-15",
+    startTime: "09:00",
+    endTime: "18:00",
     description: "Aprenda técnicas avançadas de fotografia com profissionais premiados.",
     bannerUrl: "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&auto=format&fit=crop",
     location: {
@@ -485,7 +499,10 @@ export const additionalEvents: Event[] = [
       address: "Rua das Artes, 123",
       city: "São José dos Campos",
       state: "SP",
-      postalCode: "12230-000"
+      coordinates: {
+        lat: -23.184894,
+        lng: -45.884764
+      }
     },
     tickets: [
       {
@@ -494,17 +511,24 @@ export const additionalEvents: Event[] = [
         description: "Acesso ao workshop + material digital",
         price: 180.00,
         quantity: 30,
-        remaining: 8
+        remaining: 8,
+        batch: "Lote Único"
       }
     ],
-    category: "Educação",
+    category: "business",
     featured: false,
-    organizerId: "2"
+    organizer: {
+      id: "2",
+      name: "TechVale Group"
+    },
+    gallery: []
   },
   {
     id: "13",
     title: "Feira Gastronômica Internacional",
     date: "2023-12-18",
+    startTime: "10:00",
+    endTime: "22:00",
     description: "Experimente sabores de todo o mundo em um único lugar.",
     bannerUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&auto=format&fit=crop",
     location: {
@@ -512,7 +536,10 @@ export const additionalEvents: Event[] = [
       address: "Av. Central",
       city: "São José dos Campos",
       state: "SP",
-      postalCode: "12225-000"
+      coordinates: {
+        lat: -23.221112,
+        lng: -45.908814
+      }
     },
     tickets: [
       {
@@ -521,7 +548,8 @@ export const additionalEvents: Event[] = [
         description: "Acesso à feira (consumo à parte)",
         price: 30.00,
         quantity: 1000,
-        remaining: 600
+        remaining: 600,
+        batch: "1º Lote"
       },
       {
         id: "132",
@@ -529,17 +557,24 @@ export const additionalEvents: Event[] = [
         description: "Inclui degustação em 5 estandes selecionados",
         price: 85.00,
         quantity: 200,
-        remaining: 75
+        remaining: 75,
+        batch: "Lote Único"
       }
     ],
-    category: "Gastronomia",
+    category: "food",
     featured: true,
-    organizerId: "1"
+    organizer: {
+      id: "1",
+      name: "EventPro Produções"
+    },
+    gallery: []
   },
   {
     id: "14",
     title: "Corrida Beneficente 5K",
     date: "2023-12-20",
+    startTime: "07:00",
+    endTime: "11:00",
     description: "Participe desta corrida e ajude instituições de caridade locais.",
     bannerUrl: "https://images.unsplash.com/photo-1509255929945-586a420363cf?w=800&auto=format&fit=crop",
     location: {
@@ -547,7 +582,10 @@ export const additionalEvents: Event[] = [
       address: "Av. Olivo Gomes",
       city: "São José dos Campos",
       state: "SP",
-      postalCode: "12227-010"
+      coordinates: {
+        lat: -23.162985,
+        lng: -45.909048
+      }
     },
     tickets: [
       {
@@ -556,17 +594,24 @@ export const additionalEvents: Event[] = [
         description: "Kit corrida + medalha de participação",
         price: 65.00,
         quantity: 300,
-        remaining: 120
+        remaining: 120,
+        batch: "1º Lote"
       }
     ],
-    category: "Esportes",
+    category: "sports",
     featured: false,
-    organizerId: "3"
+    organizer: {
+      id: "3",
+      name: "Risos Produções"
+    },
+    gallery: []
   },
   {
     id: "15",
     title: "Festival de Teatro Independente",
     date: "2023-12-25",
+    startTime: "19:00",
+    endTime: "22:30",
     description: "Apresentações de grupos teatrais independentes com peças inovadoras.",
     bannerUrl: "https://images.unsplash.com/photo-1503095396549-807759245b35?w=800&auto=format&fit=crop",
     location: {
@@ -574,7 +619,10 @@ export const additionalEvents: Event[] = [
       address: "Praça Afonso Pena, 50",
       city: "São José dos Campos",
       state: "SP",
-      postalCode: "12210-090"
+      coordinates: {
+        lat: -23.194254,
+        lng: -45.901537
+      }
     },
     tickets: [
       {
@@ -583,7 +631,8 @@ export const additionalEvents: Event[] = [
         description: "Acesso a todas as apresentações do dia",
         price: 45.00,
         quantity: 200,
-        remaining: 160
+        remaining: 160,
+        batch: "1º Lote"
       },
       {
         id: "152",
@@ -591,17 +640,24 @@ export const additionalEvents: Event[] = [
         description: "Acesso a todas as apresentações durante os 3 dias",
         price: 110.00,
         quantity: 50,
-        remaining: 22
+        remaining: 22,
+        batch: "Lote Único"
       }
     ],
-    category: "Arte e Cultura",
+    category: "comedy",
     featured: true,
-    organizerId: "2"
+    organizer: {
+      id: "2",
+      name: "TechVale Group"
+    },
+    gallery: []
   },
   {
     id: "16",
     title: "Encontro de Colecionadores de Vinil",
     date: "2024-01-05",
+    startTime: "10:00",
+    endTime: "18:00",
     description: "Traga seus discos e troque com outros colecionadores neste evento único.",
     bannerUrl: "https://images.unsplash.com/photo-1502773860571-211a597d6e4b?w=800&auto=format&fit=crop",
     location: {
@@ -609,7 +665,10 @@ export const additionalEvents: Event[] = [
       address: "Rua Rubião Júnior, 84",
       city: "São José dos Campos",
       state: "SP",
-      postalCode: "12210-180"
+      coordinates: {
+        lat: -23.194254,
+        lng: -45.901537
+      }
     },
     tickets: [
       {
@@ -618,7 +677,8 @@ export const additionalEvents: Event[] = [
         description: "Acesso ao evento",
         price: 15.00,
         quantity: 150,
-        remaining: 112
+        remaining: 112,
+        batch: "1º Lote"
       },
       {
         id: "162",
@@ -626,17 +686,24 @@ export const additionalEvents: Event[] = [
         description: "Mesa para exposição/venda de itens",
         price: 60.00,
         quantity: 30,
-        remaining: 5
+        remaining: 5,
+        batch: "Lote Único"
       }
     ],
-    category: "Música",
+    category: "music",
     featured: false,
-    organizerId: "1"
+    organizer: {
+      id: "1",
+      name: "EventPro Produções"
+    },
+    gallery: []
   },
   {
     id: "17",
     title: "Hackathon: Tecnologia para Cidades Inteligentes",
     date: "2024-01-10",
+    startTime: "08:00",
+    endTime: "20:00",
     description: "48 horas de imersão para desenvolver soluções tecnológicas para problemas urbanos.",
     bannerUrl: "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?w=800&auto=format&fit=crop",
     location: {
@@ -644,7 +711,10 @@ export const additionalEvents: Event[] = [
       address: "Av. Dr. Sebastião Henrique da Cunha Pontes, 8000",
       city: "São José dos Campos",
       state: "SP",
-      postalCode: "12237-823"
+      coordinates: {
+        lat: -23.221112,
+        lng: -45.908814
+      }
     },
     tickets: [
       {
@@ -653,17 +723,24 @@ export const additionalEvents: Event[] = [
         description: "Acesso ao evento + alimentação durante os 2 dias",
         price: 0.00,
         quantity: 100,
-        remaining: 32
+        remaining: 32,
+        batch: "Lote Único"
       }
     ],
-    category: "Negócios",
+    category: "business",
     featured: true,
-    organizerId: "3"
+    organizer: {
+      id: "3",
+      name: "Risos Produções"
+    },
+    gallery: []
   },
   {
     id: "18",
     title: "Festival de Cerveja Artesanal",
     date: "2024-01-15",
+    startTime: "14:00",
+    endTime: "23:00",
     description: "Deguste as melhores cervejas artesanais da região com música ao vivo.",
     bannerUrl: "https://images.unsplash.com/photo-1575367439058-6096bb9cf5e2?w=800&auto=format&fit=crop",
     location: {
@@ -671,7 +748,10 @@ export const additionalEvents: Event[] = [
       address: "R. Eng. Prudente Meireles de Morais, 302",
       city: "São José dos Campos",
       state: "SP",
-      postalCode: "12210-000"
+      coordinates: {
+        lat: -23.192807,
+        lng: -45.892553
+      }
     },
     tickets: [
       {
@@ -680,7 +760,8 @@ export const additionalEvents: Event[] = [
         description: "Inclui copo personalizado e 2 fichas de degustação",
         price: 50.00,
         quantity: 500,
-        remaining: 187
+        remaining: 187,
+        batch: "1º Lote"
       },
       {
         id: "182",
@@ -688,17 +769,24 @@ export const additionalEvents: Event[] = [
         description: "Inclui copo personalizado, 5 fichas de degustação e acesso à área VIP",
         price: 120.00,
         quantity: 100,
-        remaining: 37
+        remaining: 37,
+        batch: "Lote Premium"
       }
     ],
-    category: "Gastronomia",
+    category: "food",
     featured: false,
-    organizerId: "2"
+    organizer: {
+      id: "2",
+      name: "TechVale Group"
+    },
+    gallery: []
   },
   {
     id: "19",
     title: "Palestra: Inteligência Artificial e o Futuro do Trabalho",
     date: "2024-01-20",
+    startTime: "19:00",
+    endTime: "21:30",
     description: "Discussão com especialistas sobre como a IA está transformando o mercado de trabalho.",
     bannerUrl: "https://images.unsplash.com/photo-1558403194-611308249627?w=800&auto=format&fit=crop",
     location: {
@@ -706,7 +794,10 @@ export const additionalEvents: Event[] = [
       address: "Av. Shishima Hifumi, 2911",
       city: "São José dos Campos",
       state: "SP",
-      postalCode: "12244-000"
+      coordinates: {
+        lat: -23.207436,
+        lng: -45.870498
+      }
     },
     tickets: [
       {
@@ -715,7 +806,8 @@ export const additionalEvents: Event[] = [
         description: "Acesso à palestra",
         price: 35.00,
         quantity: 150,
-        remaining: 83
+        remaining: 83,
+        batch: "1º Lote"
       },
       {
         id: "192",
@@ -723,17 +815,24 @@ export const additionalEvents: Event[] = [
         description: "Acesso à palestra (necessária comprovação)",
         price: 17.50,
         quantity: 100,
-        remaining: 42
+        remaining: 42,
+        batch: "1º Lote"
       }
     ],
-    category: "Educação",
+    category: "business",
     featured: true,
-    organizerId: "1"
+    organizer: {
+      id: "1",
+      name: "EventPro Produções"
+    },
+    gallery: []
   },
   {
     id: "20",
     title: "Retiro de Yoga e Meditação",
     date: "2024-01-25",
+    startTime: "14:00",
+    endTime: "16:00",
     description: "Um fim de semana de reconexão com a natureza e práticas de bem-estar.",
     bannerUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&auto=format&fit=crop",
     location: {
@@ -741,7 +840,10 @@ export const additionalEvents: Event[] = [
       address: "Estrada do Monte Verde, Km 5",
       city: "Monteiro Lobato",
       state: "SP",
-      postalCode: "12250-000"
+      coordinates: {
+        lat: -22.954450,
+        lng: -45.840173
+      }
     },
     tickets: [
       {
@@ -750,7 +852,8 @@ export const additionalEvents: Event[] = [
         description: "2 diárias com hospedagem, alimentação e todas as atividades",
         price: 750.00,
         quantity: 30,
-        remaining: 12
+        remaining: 12,
+        batch: "Lote Único"
       },
       {
         id: "202",
@@ -758,12 +861,17 @@ export const additionalEvents: Event[] = [
         description: "Acesso às atividades por um dia (sem hospedagem)",
         price: 180.00,
         quantity: 20,
-        remaining: 8
+        remaining: 8,
+        batch: "Lote Único"
       }
     ],
-    category: "Saúde e Bem-estar",
+    category: "wellness",
     featured: false,
-    organizerId: "3"
+    organizer: {
+      id: "3",
+      name: "Risos Produções"
+    },
+    gallery: []
   }
 ];
 
@@ -822,5 +930,5 @@ export const partners = [
   }
 ];
 
-// Update the events export to use allEvents
+// Use allEvents instead of redefining events
 export { allEvents as events };
