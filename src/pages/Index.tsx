@@ -119,7 +119,7 @@ const Index = () => {
         
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 z-10">
           <div className="text-center text-white px-4">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">SanjaPass</h1>
+            
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="bg-primary text-white hover:bg-primary/90">
