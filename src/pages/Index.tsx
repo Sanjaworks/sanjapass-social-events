@@ -122,9 +122,7 @@ const Index = () => {
             
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-primary text-white hover:bg-primary/90">
-                <PlusCircle className="mr-2 h-5 w-5" /> Crie seu Evento
-              </Button>
+              
               <Button size="lg" variant="outline" className="bg-white text-primary border-white hover:bg-white/90">
                 <Search className="mr-2 h-5 w-5" /> Busque seu Rolê Aqui!
               </Button>
