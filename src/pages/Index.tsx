@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CalendarCheck, Users, Image, Instagram, Camera, Search, PlusCircle } from 'lucide-react';
@@ -12,22 +11,20 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { TestimonialsSection } from '@/components/ui/testimonials-with-marquee';
 import { EventCategories } from '@/components/ui/event-categories';
 import PartnersCarousel from '@/components/partners/PartnersCarousel';
-
 const Index = () => {
   const [featuredEvents, setFeaturedEvents] = useState<Event[]>([]);
   const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
   const [popularEvents, setPopularEvents] = useState<Event[]>([]);
-  
   useEffect(() => {
     // Simulate fetching events
     setFeaturedEvents(events.filter(event => event.featured));
-    
+
     // Get upcoming events (sorted by date)
     const upcoming = [...events].sort((a, b) => {
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     });
     setUpcomingEvents(upcoming);
-    
+
     // Get popular events (sorted by remaining tickets - fewer remaining = more popular)
     const popular = [...events].sort((a, b) => {
       const aRemaining = a.tickets.reduce((sum, ticket) => sum + ticket.remaining, 0);
@@ -36,102 +33,86 @@ const Index = () => {
     });
     setPopularEvents(popular);
   }, []);
-  
+
   // Convert events to the HeroParallax expected format
   const heroProducts = events.map(event => ({
     title: event.title,
     link: `/events/${event.id}`,
     thumbnail: event.bannerUrl
   }));
-  
+
   // Fill with more items if needed to have enough items for duplication
-  const fillerItems = [
-    {
-      title: "SanjaPass Festival",
-      link: "/events",
-      thumbnail: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=1770&auto=format&fit=crop"
-    },
-    {
-      title: "Shows de Verão",
-      link: "/events",
-      thumbnail: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=1770&auto=format&fit=crop"
-    },
-    {
-      title: "Feira Gastronômica",
-      link: "/events",
-      thumbnail: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1770&auto=format&fit=crop"
-    }
-  ];
-  
+  const fillerItems = [{
+    title: "SanjaPass Festival",
+    link: "/events",
+    thumbnail: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=1770&auto=format&fit=crop"
+  }, {
+    title: "Shows de Verão",
+    link: "/events",
+    thumbnail: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=1770&auto=format&fit=crop"
+  }, {
+    title: "Feira Gastronômica",
+    link: "/events",
+    thumbnail: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1770&auto=format&fit=crop"
+  }];
   const products = [...heroProducts];
   while (products.length < 15) {
     products.push(fillerItems[products.length % fillerItems.length]);
   }
 
   // Mock photos for the Instagram-like feed
-  const instaSanjaPhotos = [
-    {
-      id: 1,
-      imageUrl: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=1770&auto=format&fit=crop",
-      user: "maria_silva",
-      likes: 124,
-      eventName: "Rock in Rio"
-    },
-    {
-      id: 2,
-      imageUrl: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=1770&auto=format&fit=crop",
-      user: "joao_santos",
-      likes: 89,
-      eventName: "Festival de Verão"
-    },
-    {
-      id: 3,
-      imageUrl: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1770&auto=format&fit=crop",
-      user: "ana_costa",
-      likes: 156,
-      eventName: "Feira Gastronômica"
-    },
-    {
-      id: 4,
-      imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1770&auto=format&fit=crop",
-      user: "carlos_oliveira",
-      likes: 72,
-      eventName: "Exposição de Arte"
-    },
-  ];
-  
-  // Testimonial data
-  const testimonials = [
-    {
-      author: {
-        name: "Mariana Alves",
-        handle: "@marialves",
-        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face"
-      },
-      text: "O SanjaPass facilitou muito minha vida! Comprei ingressos para 3 eventos diferentes e o processo foi super rápido. Recomendo demais!",
-      href: "#"
-    },
-    {
-      author: {
-        name: "Ricardo Santos",
-        handle: "@ricardinho",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
-      },
-      text: "Como organizador de eventos, o SanjaPass me ajudou a aumentar a visibilidade e as vendas dos meus eventos. A plataforma é incrível!",
-      href: "#"
-    },
-    {
-      author: {
-        name: "Juliana Ferreira",
-        handle: "@juhferreira",
-        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face"
-      },
-      text: "Adoro poder compartilhar fotos dos eventos e ver o que outras pessoas estão curtindo. A parte social do SanjaPass é demais!"
-    }
-  ];
+  const instaSanjaPhotos = [{
+    id: 1,
+    imageUrl: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=1770&auto=format&fit=crop",
+    user: "maria_silva",
+    likes: 124,
+    eventName: "Rock in Rio"
+  }, {
+    id: 2,
+    imageUrl: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=1770&auto=format&fit=crop",
+    user: "joao_santos",
+    likes: 89,
+    eventName: "Festival de Verão"
+  }, {
+    id: 3,
+    imageUrl: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1770&auto=format&fit=crop",
+    user: "ana_costa",
+    likes: 156,
+    eventName: "Feira Gastronômica"
+  }, {
+    id: 4,
+    imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1770&auto=format&fit=crop",
+    user: "carlos_oliveira",
+    likes: 72,
+    eventName: "Exposição de Arte"
+  }];
 
-  return (
-    <MainLayout>
+  // Testimonial data
+  const testimonials = [{
+    author: {
+      name: "Mariana Alves",
+      handle: "@marialves",
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face"
+    },
+    text: "O SanjaPass facilitou muito minha vida! Comprei ingressos para 3 eventos diferentes e o processo foi super rápido. Recomendo demais!",
+    href: "#"
+  }, {
+    author: {
+      name: "Ricardo Santos",
+      handle: "@ricardinho",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+    },
+    text: "Como organizador de eventos, o SanjaPass me ajudou a aumentar a visibilidade e as vendas dos meus eventos. A plataforma é incrível!",
+    href: "#"
+  }, {
+    author: {
+      name: "Juliana Ferreira",
+      handle: "@juhferreira",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face"
+    },
+    text: "Adoro poder compartilhar fotos dos eventos e ver o que outras pessoas estão curtindo. A parte social do SanjaPass é demais!"
+  }];
+  return <MainLayout>
       {/* Hero Parallax Section with Centered Content */}
       <div className="relative">
         <HeroParallax products={products} />
@@ -139,9 +120,7 @@ const Index = () => {
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 z-10">
           <div className="text-center text-white px-4">
             <h1 className="text-4xl md:text-6xl font-bold mb-4">SanjaPass</h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-              A plataforma completa para criar, divulgar e viver experiências incríveis em São José dos Campos
-            </p>
+            
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="bg-primary text-white hover:bg-primary/90">
                 <PlusCircle className="mr-2 h-5 w-5" /> Crie seu Evento
@@ -169,16 +148,12 @@ const Index = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredEvents.slice(0, 6).map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
+              {featuredEvents.slice(0, 6).map(event => <EventCard key={event.id} event={event} />)}
             </div>
             
-            {featuredEvents.length === 0 && (
-              <div className="text-center py-12">
+            {featuredEvents.length === 0 && <div className="text-center py-12">
                 <p className="text-gray-500">Carregando eventos...</p>
-              </div>
-            )}
+              </div>}
           </div>
         </section>
         
@@ -199,7 +174,9 @@ const Index = () => {
                 </p>
               </div>
               
-              <div className="flex flex-col items-center text-center p-6 animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+              <div className="flex flex-col items-center text-center p-6 animate-fadeIn" style={{
+              animationDelay: '0.2s'
+            }}>
                 <div className="bg-primary/10 p-4 rounded-full mb-4">
                   <Users className="h-10 w-10 text-primary" />
                 </div>
@@ -209,7 +186,9 @@ const Index = () => {
                 </p>
               </div>
               
-              <div className="flex flex-col items-center text-center p-6 animate-fadeIn" style={{ animationDelay: '0.4s' }}>
+              <div className="flex flex-col items-center text-center p-6 animate-fadeIn" style={{
+              animationDelay: '0.4s'
+            }}>
                 <div className="bg-primary/10 p-4 rounded-full mb-4">
                   <Image className="h-10 w-10 text-primary" />
                 </div>
@@ -231,11 +210,7 @@ const Index = () => {
         </section>
         
         {/* Testimonials Section */}
-        <TestimonialsSection
-          title="O que nossos usuários dizem"
-          description="Junte-se a milhares de pessoas que já aproveitam a melhor experiência em eventos"
-          testimonials={testimonials}
-        />
+        <TestimonialsSection title="O que nossos usuários dizem" description="Junte-se a milhares de pessoas que já aproveitam a melhor experiência em eventos" testimonials={testimonials} />
         
         {/* Upcoming Events Section */}
         <section className="py-16 bg-page">
@@ -248,9 +223,7 @@ const Index = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {upcomingEvents.slice(0, 4).map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
+              {upcomingEvents.slice(0, 4).map(event => <EventCard key={event.id} event={event} />)}
             </div>
           </div>
         </section>
@@ -269,9 +242,7 @@ const Index = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {popularEvents.slice(0, 3).map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
+              {popularEvents.slice(0, 3).map(event => <EventCard key={event.id} event={event} />)}
             </div>
           </div>
         </section>
@@ -322,25 +293,18 @@ const Index = () => {
               
               <div className="hidden md:block relative">
                 <div className="relative z-10">
-                  <img 
-                    src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&auto=format&fit=crop" 
-                    alt="Evento" 
-                    className="rounded-lg shadow-xl w-full h-80 object-cover"
-                  />
+                  <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&auto=format&fit=crop" alt="Evento" className="rounded-lg shadow-xl w-full h-80 object-cover" />
                 </div>
-                <div className="absolute top-10 right-10 z-20 w-48 h-48 bg-white p-3 rounded-lg shadow-lg rotate-6 animate-bounce" style={{ animationDuration: '5s' }}>
-                  <img 
-                    src="https://images.unsplash.com/photo-1553775282-20af80779df7?w=400&auto=format&fit=crop" 
-                    alt="Gráfico de vendas" 
-                    className="w-full h-full object-cover rounded"
-                  />
+                <div className="absolute top-10 right-10 z-20 w-48 h-48 bg-white p-3 rounded-lg shadow-lg rotate-6 animate-bounce" style={{
+                animationDuration: '5s'
+              }}>
+                  <img src="https://images.unsplash.com/photo-1553775282-20af80779df7?w=400&auto=format&fit=crop" alt="Gráfico de vendas" className="w-full h-full object-cover rounded" />
                 </div>
-                <div className="absolute -bottom-5 -left-5 z-20 w-36 h-36 bg-white p-3 rounded-lg shadow-lg -rotate-6 animate-bounce" style={{ animationDuration: '6s', animationDelay: '0.5s' }}>
-                  <img 
-                    src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&auto=format&fit=crop" 
-                    alt="Análise de dados" 
-                    className="w-full h-full object-cover rounded"
-                  />
+                <div className="absolute -bottom-5 -left-5 z-20 w-36 h-36 bg-white p-3 rounded-lg shadow-lg -rotate-6 animate-bounce" style={{
+                animationDuration: '6s',
+                animationDelay: '0.5s'
+              }}>
+                  <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&auto=format&fit=crop" alt="Análise de dados" className="w-full h-full object-cover rounded" />
                 </div>
               </div>
             </div>
@@ -362,13 +326,8 @@ const Index = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {instaSanjaPhotos.map(photo => (
-                <div key={photo.id} className="relative group overflow-hidden rounded-lg">
-                  <img 
-                    src={photo.imageUrl} 
-                    alt={`Foto de ${photo.user}`} 
-                    className="w-full aspect-square object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
+              {instaSanjaPhotos.map(photo => <div key={photo.id} className="relative group overflow-hidden rounded-lg">
+                  <img src={photo.imageUrl} alt={`Foto de ${photo.user}`} className="w-full aspect-square object-cover transition-transform duration-300 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-semibold">@{photo.user}</span>
@@ -376,8 +335,7 @@ const Index = () => {
                     </div>
                     <p className="text-sm opacity-90">{photo.eventName}</p>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
             
             <div className="mt-8 text-center">
@@ -402,42 +360,22 @@ const Index = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
-                    <input
-                      type="text"
-                      id="name"
-                      className="input-field w-full"
-                      placeholder="Seu nome"
-                    />
+                    <input type="text" id="name" className="input-field w-full" placeholder="Seu nome" />
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="input-field w-full"
-                      placeholder="seu.email@exemplo.com"
-                    />
+                    <input type="email" id="email" className="input-field w-full" placeholder="seu.email@exemplo.com" />
                   </div>
                 </div>
                 
                 <div>
                   <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Assunto</label>
-                  <input
-                    type="text"
-                    id="subject"
-                    className="input-field w-full"
-                    placeholder="Assunto da mensagem"
-                  />
+                  <input type="text" id="subject" className="input-field w-full" placeholder="Assunto da mensagem" />
                 </div>
                 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Mensagem</label>
-                  <textarea
-                    id="message"
-                    rows={5}
-                    className="input-field w-full resize-none"
-                    placeholder="Escreva sua mensagem aqui..."
-                  ></textarea>
+                  <textarea id="message" rows={5} className="input-field w-full resize-none" placeholder="Escreva sua mensagem aqui..."></textarea>
                 </div>
                 
                 <div className="text-center">
@@ -465,18 +403,12 @@ const Index = () => {
               </div>
               
               <div className="w-full md:w-auto">
-                <img 
-                  src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
-                  alt="Organizadores de eventos" 
-                  className="rounded-lg shadow-lg w-full md:w-80 lg:w-96 h-auto object-cover"
-                />
+                <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Organizadores de eventos" className="rounded-lg shadow-lg w-full md:w-80 lg:w-96 h-auto object-cover" />
               </div>
             </div>
           </div>
         </section>
       </div>
-    </MainLayout>
-  );
+    </MainLayout>;
 };
-
 export default Index;
