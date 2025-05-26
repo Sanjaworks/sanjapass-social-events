@@ -2,8 +2,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { StaffAuthProvider } from '@/contexts/StaffAuthContext';
+import StaffLoginPage from '@/pages/staff/StaffLoginPage';
+import StaffCheckinPage from '@/pages/staff/StaffCheckinPage';
 
 // Public Pages
 import Index from "./pages/Index";
@@ -67,7 +70,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <Router>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Index />} />
@@ -275,10 +278,14 @@ const App = () => (
               } 
             />
             
+            {/* Staff Routes */}
+            <Route path="/staff/login" element={<StaffLoginPage />} />
+            <Route path="/staff/checkin" element={<StaffCheckinPage />} />
+            
             {/* Catch-all (404) */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </BrowserRouter>
+        </Router>
       </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>
