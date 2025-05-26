@@ -278,9 +278,15 @@ const App = () => (
               } 
             />
             
-            {/* Staff Routes */}
-            <Route path="/staff/login" element={<StaffLoginPage />} />
-            <Route path="/staff/checkin" element={<StaffCheckinPage />} />
+            {/* Staff Routes - wrapped with StaffAuthProvider */}
+            <Route path="/staff/*" element={
+              <StaffAuthProvider>
+                <Routes>
+                  <Route path="login" element={<StaffLoginPage />} />
+                  <Route path="checkin" element={<StaffCheckinPage />} />
+                </Routes>
+              </StaffAuthProvider>
+            } />
             
             {/* Catch-all (404) */}
             <Route path="*" element={<NotFound />} />
