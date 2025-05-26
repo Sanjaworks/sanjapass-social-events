@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -24,6 +25,9 @@ import CustomerDashboard from "./pages/dashboard/CustomerDashboard";
 import CustomerTickets from "./pages/dashboard/CustomerTickets";
 import OrganizerDashboard from "./pages/dashboard/OrganizerDashboard";
 import OrganizerEvents from "./pages/dashboard/OrganizerEvents";
+import OrganizerStaff from "./pages/dashboard/OrganizerStaff";
+import TicketDesigner from "./pages/dashboard/TicketDesigner";
+import TicketValidation from "./pages/dashboard/TicketValidation";
 import CreateEvent from "./pages/dashboard/CreateEvent";
 import EditEvent from "./pages/dashboard/EditEvent";
 import CheckinPage from "./pages/dashboard/CheckinPage";

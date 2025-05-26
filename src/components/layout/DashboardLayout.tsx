@@ -1,7 +1,21 @@
 
 import { ReactNode, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Calendar, Users, Settings, ChevronRight, LogOut, Menu, X, DollarSign } from 'lucide-react';
+import { 
+  Home, 
+  Calendar, 
+  Users, 
+  Settings, 
+  ChevronRight, 
+  LogOut, 
+  Menu, 
+  X, 
+  DollarSign,
+  Palette,
+  UserCheck,
+  ShieldCheck,
+  MapPin
+} from 'lucide-react';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -27,6 +41,10 @@ const DashboardLayout = ({ children, userType }: DashboardLayoutProps) => {
           { name: 'Dashboard', path: '/organizer', icon: Home },
           { name: 'Meus Eventos', path: '/organizer/events', icon: Calendar },
           { name: 'Participantes', path: '/organizer/attendees', icon: Users },
+          { name: 'Gestão de Staff', path: '/organizer/staff', icon: UserCheck },
+          { name: 'Designer de Ingressos', path: '/organizer/ticket-designer', icon: Palette },
+          { name: 'Validação de Ingressos', path: '/organizer/ticket-validation', icon: ShieldCheck },
+          { name: 'Pontos de Venda', path: '/organizer/sales-points', icon: MapPin },
           { name: 'Relatórios', path: '/organizer/reports', icon: ChevronRight },
           { name: 'Financeiro', path: '/organizer/financial', icon: DollarSign },
           { name: 'Check-in', path: '/organizer/checkin', icon: ChevronRight },
