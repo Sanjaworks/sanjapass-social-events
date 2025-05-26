@@ -94,7 +94,7 @@ export const SalesChannelModal = ({
       };
 
       if (channel) {
-        await organizerService.updateSalesChannel(eventId, channel.id, channelData);
+        await organizerService.updateSalesChannel(channel.id, channelData);
         toast({
           title: 'Ponto de venda atualizado',
           description: 'O ponto de venda foi atualizado com sucesso.',

@@ -99,7 +99,7 @@ export const TicketModal = ({
       };
 
       if (ticket) {
-        await organizerService.updateTicket(eventId, ticket.id, ticketData);
+        await organizerService.updateTicket(ticket.id, ticketData);
         toast({
           title: 'Ingresso atualizado',
           description: 'O ingresso foi atualizado com sucesso.',
