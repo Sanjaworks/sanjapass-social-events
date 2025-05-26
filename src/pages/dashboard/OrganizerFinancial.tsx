@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from 'react';
-import { DollarSign, CreditCard, Bank, Download, Eye, Plus } from 'lucide-react';
+import { DollarSign, CreditCard, Landmark, Download, Eye, Plus } from 'lucide-react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -117,7 +116,7 @@ const OrganizerFinancial = () => {
           </div>
           <div className="flex space-x-2">
             <Button variant="outline" onClick={() => setBankModalOpen(true)}>
-              <Bank className="h-4 w-4 mr-2" />
+              <Landmark className="h-4 w-4 mr-2" />
               Dados Bancários
             </Button>
             <Button>
@@ -166,7 +165,7 @@ const OrganizerFinancial = () => {
                     {financialSummary ? formatCurrency(financialSummary.totalFees) : 'R$ 0'}
                   </h3>
                 </div>
-                <Bank className="h-8 w-8 text-orange-600" />
+                <Landmark className="h-8 w-8 text-orange-600" />
               </div>
             </CardContent>
           </Card>
