@@ -42,13 +42,13 @@ export const SalesChannelModal = ({
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
-    type: 'online' as const,
+    type: 'online' as 'online' | 'physical' | 'partner',
     address: '',
     email: '',
     commission: 0,
     contactPerson: '',
     phone: '',
-    status: 'active' as const,
+    status: 'active' as 'active' | 'inactive',
   });
 
   useEffect(() => {
@@ -151,7 +151,7 @@ export const SalesChannelModal = ({
             <Label htmlFor="type">Tipo</Label>
             <Select
               value={formData.type}
-              onValueChange={(value) => setFormData({ ...formData, type: value as any })}
+              onValueChange={(value: 'online' | 'physical' | 'partner') => setFormData({ ...formData, type: value })}
             >
               <SelectTrigger>
                 <SelectValue />

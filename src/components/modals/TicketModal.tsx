@@ -48,7 +48,7 @@ export const TicketModal = ({
     batch: '1º Lote',
     salesStart: '',
     salesEnd: '',
-    category: 'standard' as const,
+    category: 'standard' as 'standard' | 'vip' | 'early-bird' | 'student' | 'group',
     isActive: true,
   });
 
@@ -191,7 +191,7 @@ export const TicketModal = ({
             <Label htmlFor="category">Categoria</Label>
             <Select
               value={formData.category}
-              onValueChange={(value) => setFormData({ ...formData, category: value as any })}
+              onValueChange={(value: 'standard' | 'vip' | 'early-bird' | 'student' | 'group') => setFormData({ ...formData, category: value })}
             >
               <SelectTrigger>
                 <SelectValue />
