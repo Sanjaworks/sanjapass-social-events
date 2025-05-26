@@ -42,7 +42,7 @@ export const HeroParallax = ({
   useAnimationFrame(() => {
     continuousMove.set((continuousMove.get() + 0.5) % 100); // velocidade do movimento
   });
-  return <div ref={ref} className="min-h-screen pb-10 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]">
+  return <div ref={ref} className="min-h-screen pb-10 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d] my-0">
       <Header />
       <motion.div style={{
       rotateX,

@@ -117,7 +117,7 @@ const Index = () => {
       <div className="relative">
         <HeroParallax products={products} />
         
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-opacity-50 z-10 bg-transparent py-[60px] my-[237px]">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-opacity-50 z-10 bg-transparent my-0 py-0">
           <div className="text-center text-white px-4">
             
             
