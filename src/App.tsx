@@ -21,6 +21,9 @@ import ComoFunciona from "./pages/ComoFunciona";
 import CustomerDashboard from "./pages/dashboard/CustomerDashboard";
 import CustomerTickets from "./pages/dashboard/CustomerTickets";
 import OrganizerDashboard from "./pages/dashboard/OrganizerDashboard";
+import OrganizerEvents from "./pages/dashboard/OrganizerEvents";
+import CreateEvent from "./pages/dashboard/CreateEvent";
+import EditEvent from "./pages/dashboard/EditEvent";
 import CheckinPage from "./pages/dashboard/CheckinPage";
 import MasterAdminPanel from "./pages/dashboard/MasterAdminPanel";
 import OrganizersManagement from "./pages/dashboard/OrganizersManagement";
@@ -118,6 +121,30 @@ const App = () => (
               element={
                 <ProtectedRoute allowedRoles={['organizer']}>
                   <OrganizerDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/organizer/events" 
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <OrganizerEvents />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/organizer/events/create" 
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <CreateEvent />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/organizer/events/:eventId/edit" 
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <EditEvent />
                 </ProtectedRoute>
               } 
             />
