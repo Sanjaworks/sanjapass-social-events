@@ -24,9 +24,12 @@ const DashboardLayout = ({ children, userType }: DashboardLayoutProps) => {
         ];
       case 'organizer':
         return [
-          { name: 'Início', path: '/organizer', icon: Home },
+          { name: 'Dashboard', path: '/organizer', icon: Home },
           { name: 'Meus Eventos', path: '/organizer/events', icon: Calendar },
           { name: 'Participantes', path: '/organizer/attendees', icon: Users },
+          { name: 'Relatórios', path: '/organizer/reports', icon: ChevronRight },
+          { name: 'Financeiro', path: '/organizer/financial', icon: DollarSign },
+          { name: 'Check-in', path: '/organizer/checkin', icon: ChevronRight },
           { name: 'Configurações', path: '/organizer/settings', icon: Settings },
         ];
       case 'admin':

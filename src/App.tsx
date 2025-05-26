@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -36,6 +35,9 @@ import Settings from "./pages/dashboard/Settings";
 import FinancialDashboard from "./pages/dashboard/FinancialDashboard";
 import FinancialTransactions from "./pages/dashboard/FinancialTransactions";
 import PayoutManagement from "./pages/dashboard/PayoutManagement";
+import OrganizerAttendees from "./pages/dashboard/OrganizerAttendees";
+import OrganizerReports from "./pages/dashboard/OrganizerReports";
+import OrganizerFinancial from "./pages/dashboard/OrganizerFinancial";
 
 const queryClient = new QueryClient();
 
@@ -145,6 +147,38 @@ const App = () => (
               element={
                 <ProtectedRoute allowedRoles={['organizer']}>
                   <EditEvent />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/organizer/attendees" 
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <OrganizerAttendees />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/organizer/attendees/:eventId" 
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <OrganizerAttendees />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/organizer/reports" 
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <OrganizerReports />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/organizer/financial" 
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <OrganizerFinancial />
                 </ProtectedRoute>
               } 
             />

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Edit, Trash2, Settings, DollarSign, Users, Calendar, MapPin } from 'lucide-react';
@@ -14,7 +13,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
+import { TicketModal } from '@/components/modals/TicketModal';
+import { SalesChannelModal } from '@/components/modals/SalesChannelModal';
 import { organizerService } from '@/services/organizerService';
 import { Event, Ticket, SalesChannel } from '@/interfaces/organizer';
 
@@ -24,6 +25,10 @@ const EditEvent = () => {
   const { toast } = useToast();
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
+  const [ticketModalOpen, setTicketModalOpen] = useState(false);
+  const [salesChannelModalOpen, setSalesChannelModalOpen] = useState(false);
+  const [editingTicket, setEditingTicket] = useState<Ticket | undefined>();
+  const [editingChannel, setEditingChannel] = useState<SalesChannel | undefined>();
 
   useEffect(() => {
     if (eventId) {
@@ -45,6 +50,28 @@ const EditEvent = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleEditTicket = (ticket: Ticket) => {
+    setEditingTicket(ticket);
+    setTicketModalOpen(true);
+  };
+
+  const handleEditChannel = (channel: SalesChannel) => {
+    setEditingChannel(channel);
+    setSalesChannelModalOpen(true);
+  };
+
+  const handleTicketModalClose = () => {
+    setTicketModalOpen(false);
+    setEditingTicket(undefined);
+    loadEvent(); // Reload to get updated data
+  };
+
+  const handleChannelModalClose = () => {
+    setSalesChannelModalOpen(false);
+    setEditingChannel(undefined);
+    loadEvent(); // Reload to get updated data
   };
 
   const handleDeleteTicket = (ticketId: string) => {
@@ -206,7 +233,7 @@ const EditEvent = () => {
             <div className="bg-white rounded-lg shadow-md">
               <div className="p-6 border-b flex justify-between items-center">
                 <h2 className="text-xl font-semibold">Tipos de Ingressos</h2>
-                <Button>
+                <Button onClick={() => setTicketModalOpen(true)}>
                   <Plus className="h-4 w-4 mr-2" />
                   Novo Ingresso
                 </Button>
@@ -246,7 +273,11 @@ const EditEvent = () => {
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end space-x-2">
-                          <Button variant="ghost" size="sm">
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => handleEditTicket(ticket)}
+                          >
                             <Edit className="h-4 w-4" />
                           </Button>
                           <Button
@@ -282,7 +313,7 @@ const EditEvent = () => {
             <div className="bg-white rounded-lg shadow-md">
               <div className="p-6 border-b flex justify-between items-center">
                 <h2 className="text-xl font-semibold">Pontos de Venda</h2>
-                <Button>
+                <Button onClick={() => setSalesChannelModalOpen(true)}>
                   <Plus className="h-4 w-4 mr-2" />
                   Novo Ponto de Venda
                 </Button>
@@ -324,7 +355,11 @@ const EditEvent = () => {
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end space-x-2">
-                          <Button variant="ghost" size="sm">
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => handleEditChannel(channel)}
+                          >
                             <Edit className="h-4 w-4" />
                           </Button>
                           <Button
@@ -373,6 +408,23 @@ const EditEvent = () => {
         </Tabs>
       </div>
     </DashboardLayout>
+
+    {/* Modals */}
+    <TicketModal
+      open={ticketModalOpen}
+      onOpenChange={setTicketModalOpen}
+      eventId={eventId!}
+      ticket={editingTicket}
+      onSuccess={handleTicketModalClose}
+    />
+
+    <SalesChannelModal
+      open={salesChannelModalOpen}
+      onOpenChange={setSalesChannelModalOpen}
+      eventId={eventId!}
+      channel={editingChannel}
+      onSuccess={handleChannelModalClose}
+    />
   );
 };
 
