@@ -117,15 +117,13 @@ const Index = () => {
       <div className="relative">
         <HeroParallax products={products} />
         
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 z-10">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-opacity-50 z-10 bg-transparent py-[60px] my-[237px]">
           <div className="text-center text-white px-4">
             
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               
-              <Button size="lg" variant="outline" className="bg-white text-primary border-white hover:bg-white/90">
-                <Search className="mr-2 h-5 w-5" /> Busque seu Rolê Aqui!
-              </Button>
+              
             </div>
           </div>
         </div>
