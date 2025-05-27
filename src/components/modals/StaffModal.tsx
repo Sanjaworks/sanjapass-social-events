@@ -25,7 +25,7 @@ import { StaffMember } from '@/interfaces/staff';
 interface StaffModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  eventId: string;
+  events: any[];
   staff?: StaffMember;
   onSuccess: () => void;
 }
@@ -33,7 +33,7 @@ interface StaffModalProps {
 export const StaffModal = ({
   open,
   onOpenChange,
-  eventId,
+  events,
   staff,
   onSuccess,
 }: StaffModalProps) => {
@@ -43,6 +43,7 @@ export const StaffModal = ({
     name: '',
     email: '',
     phone: '',
+    eventId: '',
     role: 'operator' as 'supervisor' | 'operator',
     isActive: true,
   });
@@ -53,6 +54,7 @@ export const StaffModal = ({
         name: staff.name,
         email: staff.email,
         phone: staff.phone || '',
+        eventId: staff.eventId,
         role: staff.role,
         isActive: staff.isActive,
       });
@@ -61,11 +63,12 @@ export const StaffModal = ({
         name: '',
         email: '',
         phone: '',
+        eventId: events.length > 0 ? events[0].id : '',
         role: 'operator',
         isActive: true,
       });
     }
-  }, [staff, open]);
+  }, [staff, open, events]);
 
   const generateTemporaryPassword = () => {
     return Math.random().toString(36).slice(-8);
@@ -83,7 +86,7 @@ export const StaffModal = ({
           description: 'As informações do membro da equipe foram atualizadas.',
         });
       } else {
-        const newStaff = await staffService.createStaffMember(eventId, formData);
+        const newStaff = await staffService.createStaffMember(formData.eventId, formData);
         const temporaryPassword = generateTemporaryPassword();
         
         // Enviar credenciais por email
@@ -155,6 +158,25 @@ export const StaffModal = ({
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               placeholder="(00) 00000-0000"
             />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="event">Evento</Label>
+            <Select
+              value={formData.eventId}
+              onValueChange={(value) => setFormData({ ...formData, eventId: value })}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Selecione um evento" />
+              </SelectTrigger>
+              <SelectContent>
+                {events.map((event) => (
+                  <SelectItem key={event.id} value={event.id}>
+                    {event.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">
