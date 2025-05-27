@@ -28,6 +28,7 @@ import OrganizerEvents from "./pages/dashboard/OrganizerEvents";
 import OrganizerStaff from "./pages/dashboard/OrganizerStaff";
 import TicketDesigner from "./pages/dashboard/TicketDesigner";
 import TicketValidation from "./pages/dashboard/TicketValidation";
+import SalesPoints from "./pages/dashboard/SalesPoints";
 import CreateEvent from "./pages/dashboard/CreateEvent";
 import EditEvent from "./pages/dashboard/EditEvent";
 import CheckinPage from "./pages/dashboard/CheckinPage";
@@ -154,6 +155,38 @@ const App = () => (
               element={
                 <ProtectedRoute allowedRoles={['organizer']}>
                   <EditEvent />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/organizer/staff" 
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <OrganizerStaff />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/organizer/ticket-designer" 
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <TicketDesigner />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/organizer/ticket-validation" 
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <TicketValidation />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/organizer/sales-points" 
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <SalesPoints />
                 </ProtectedRoute>
               } 
             />

@@ -1,11 +1,17 @@
 
-import { useState, useRef } from 'react';
-import { ArrowLeft, Download, Eye, Save, Image, Type, Square, Circle } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { Save, Eye, Download, Upload, Palette, Type, Image, Layout } from 'lucide-react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import {
   Select,
   SelectContent,
@@ -16,367 +22,334 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 
-interface DesignElement {
+interface TicketDesign {
   id: string;
-  type: 'text' | 'image' | 'qr' | 'shape';
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  content: string;
-  style: {
-    fontSize?: number;
-    fontWeight?: string;
-    color?: string;
-    backgroundColor?: string;
-    borderRadius?: number;
-  };
+  name: string;
+  backgroundColor: string;
+  textColor: string;
+  accentColor: string;
+  fontFamily: string;
+  logoUrl?: string;
+  backgroundImage?: string;
+  layout: 'classic' | 'modern' | 'minimal';
 }
 
 const TicketDesigner = () => {
-  const navigate = useNavigate();
-  const { eventId } = useParams();
   const { toast } = useToast();
-  const canvasRef = useRef<HTMLDivElement>(null);
-  
-  const [selectedTemplate, setSelectedTemplate] = useState('classic');
-  const [elements, setElements] = useState<DesignElement[]>([]);
-  const [selectedElement, setSelectedElement] = useState<string | null>(null);
-  const [draggedElement, setDraggedElement] = useState<DesignElement | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<string>('classic');
+  const [design, setDesign] = useState<TicketDesign>({
+    id: '1',
+    name: 'Meu Ingresso',
+    backgroundColor: '#ffffff',
+    textColor: '#000000',
+    accentColor: '#3b82f6',
+    fontFamily: 'Arial',
+    layout: 'classic'
+  });
 
   const templates = [
-    { id: 'classic', name: 'Clássico', preview: '/api/placeholder/200/120' },
-    { id: 'modern', name: 'Moderno', preview: '/api/placeholder/200/120' },
-    { id: 'elegant', name: 'Elegante', preview: '/api/placeholder/200/120' },
-    { id: 'festival', name: 'Festival', preview: '/api/placeholder/200/120' },
+    { id: 'classic', name: 'Clássico', preview: 'bg-white border-2 border-gray-300' },
+    { id: 'modern', name: 'Moderno', preview: 'bg-gradient-to-r from-blue-500 to-purple-600' },
+    { id: 'minimal', name: 'Minimalista', preview: 'bg-gray-100 border border-gray-200' },
+    { id: 'elegant', name: 'Elegante', preview: 'bg-black text-white' },
   ];
 
-  const addElement = (type: DesignElement['type']) => {
-    const newElement: DesignElement = {
-      id: Date.now().toString(),
-      type,
-      x: 50,
-      y: 50,
-      width: type === 'text' ? 200 : 100,
-      height: type === 'text' ? 40 : 100,
-      content: type === 'text' ? 'Texto do ingresso' : '',
-      style: {
-        fontSize: 16,
-        fontWeight: 'normal',
-        color: '#000000',
-        backgroundColor: type === 'shape' ? '#cccccc' : 'transparent',
-        borderRadius: 0,
-      },
-    };
+  const fontOptions = [
+    { value: 'Arial', label: 'Arial' },
+    { value: 'Helvetica', label: 'Helvetica' },
+    { value: 'Times New Roman', label: 'Times New Roman' },
+    { value: 'Georgia', label: 'Georgia' },
+    { value: 'Roboto', label: 'Roboto' },
+  ];
 
-    setElements([...elements, newElement]);
-    setSelectedElement(newElement.id);
-  };
-
-  const updateElement = (id: string, updates: Partial<DesignElement>) => {
-    setElements(elements.map(el => 
-      el.id === id ? { ...el, ...updates } : el
-    ));
-  };
-
-  const updateElementStyle = (id: string, styleUpdates: Partial<DesignElement['style']>) => {
-    setElements(elements.map(el => 
-      el.id === id ? { ...el, style: { ...el.style, ...styleUpdates } } : el
-    ));
-  };
-
-  const deleteElement = (id: string) => {
-    setElements(elements.filter(el => el.id !== id));
-    setSelectedElement(null);
-  };
-
-  const handleDragStart = (e: React.DragEvent, element: DesignElement) => {
-    setDraggedElement(element);
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    if (!draggedElement || !canvasRef.current) return;
-
-    const rect = canvasRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    updateElement(draggedElement.id, { x, y });
-    setDraggedElement(null);
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-  };
-
-  const saveDesign = () => {
-    const design = {
-      template: selectedTemplate,
-      elements,
-      eventId,
-    };
-
-    localStorage.setItem(`ticket-design-${eventId}`, JSON.stringify(design));
-    
+  const handleSaveDesign = () => {
     toast({
       title: 'Design salvo',
       description: 'O design do ingresso foi salvo com sucesso.',
     });
   };
 
-  const previewTicket = () => {
-    // Abrir preview em nova aba
-    const designData = encodeURIComponent(JSON.stringify({ template: selectedTemplate, elements }));
-    window.open(`/ticket-preview?design=${designData}`, '_blank');
+  const handlePreview = () => {
+    toast({
+      title: 'Visualização',
+      description: 'Abrindo visualização do ingresso...',
+    });
   };
 
-  const selectedEl = elements.find(el => el.id === selectedElement);
+  const handleExport = () => {
+    toast({
+      title: 'Exportar design',
+      description: 'Exportando design do ingresso...',
+    });
+  };
+
+  const handleImageUpload = (type: 'logo' | 'background') => {
+    toast({
+      title: 'Upload de imagem',
+      description: `Funcionalidade de upload de ${type} será implementada.`,
+    });
+  };
 
   return (
     <DashboardLayout userType="organizer">
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate(`/organizer/events/${eventId}/edit`)}
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Voltar
-            </Button>
-            <div>
-              <h1 className="text-3xl font-bold">Designer de Ingressos</h1>
-              <p className="text-gray-600 mt-1">Crie e personalize o design dos seus ingressos</p>
-            </div>
+          <div>
+            <h1 className="text-3xl font-bold">Designer de Ingressos</h1>
+            <p className="text-gray-600 mt-1">Crie e personalize o design dos seus ingressos</p>
           </div>
           <div className="flex space-x-2">
-            <Button variant="outline" onClick={previewTicket}>
+            <Button variant="outline" onClick={handlePreview}>
               <Eye className="h-4 w-4 mr-2" />
               Visualizar
             </Button>
-            <Button variant="outline" onClick={saveDesign}>
-              <Save className="h-4 w-4 mr-2" />
-              Salvar
-            </Button>
-            <Button>
+            <Button variant="outline" onClick={handleExport}>
               <Download className="h-4 w-4 mr-2" />
               Exportar
+            </Button>
+            <Button onClick={handleSaveDesign}>
+              <Save className="h-4 w-4 mr-2" />
+              Salvar Design
             </Button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Sidebar - Ferramentas */}
-          <div className="space-y-6">
-            <Tabs defaultValue="templates" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="templates">Templates</TabsTrigger>
-                <TabsTrigger value="elements">Elementos</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="templates" className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Escolha um Template</Label>
-                  <div className="grid grid-cols-1 gap-2">
-                    {templates.map((template) => (
-                      <div
-                        key={template.id}
-                        className={`border rounded-lg p-3 cursor-pointer transition-all ${
-                          selectedTemplate === template.id 
-                            ? 'border-primary bg-primary/10' 
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                        onClick={() => setSelectedTemplate(template.id)}
-                      >
-                        <div className="text-sm font-medium">{template.name}</div>
-                        <div className="w-full h-16 bg-gray-100 rounded mt-2"></div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Editor Panel */}
+          <div className="lg:col-span-1 space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Layout className="h-5 w-5 mr-2" />
+                  Templates
+                </CardTitle>
+                <CardDescription>
+                  Escolha um template base para seu ingresso
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  {templates.map((template) => (
+                    <div
+                      key={template.id}
+                      className={`cursor-pointer p-3 rounded-lg border-2 transition-all ${
+                        selectedTemplate === template.id 
+                          ? 'border-primary bg-primary/5' 
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                      onClick={() => setSelectedTemplate(template.id)}
+                    >
+                      <div className={`h-12 rounded mb-2 ${template.preview}`}></div>
+                      <p className="text-sm font-medium text-center">{template.name}</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Palette className="h-5 w-5 mr-2" />
+                  Personalização
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue="colors" className="w-full">
+                  <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="colors">Cores</TabsTrigger>
+                    <TabsTrigger value="typography">Texto</TabsTrigger>
+                    <TabsTrigger value="images">Imagens</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="colors" className="space-y-4">
+                    <div className="space-y-3">
+                      <div>
+                        <Label htmlFor="backgroundColor">Cor de Fundo</Label>
+                        <div className="flex items-center space-x-2">
+                          <input
+                            type="color"
+                            id="backgroundColor"
+                            value={design.backgroundColor}
+                            onChange={(e) => setDesign({...design, backgroundColor: e.target.value})}
+                            className="w-12 h-10 rounded border"
+                          />
+                          <Input
+                            value={design.backgroundColor}
+                            onChange={(e) => setDesign({...design, backgroundColor: e.target.value})}
+                            className="flex-1"
+                          />
+                        </div>
                       </div>
-                    ))}
-                  </div>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="elements" className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Adicionar Elementos</Label>
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => addElement('text')}
-                      className="h-12"
-                    >
-                      <Type className="h-4 w-4 mb-1" />
-                      <span className="text-xs">Texto</span>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => addElement('image')}
-                      className="h-12"
-                    >
-                      <Image className="h-4 w-4 mb-1" />
-                      <span className="text-xs">Imagem</span>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => addElement('shape')}
-                      className="h-12"
-                    >
-                      <Square className="h-4 w-4 mb-1" />
-                      <span className="text-xs">Forma</span>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => addElement('qr')}
-                      className="h-12"
-                    >
-                      <Square className="h-4 w-4 mb-1" />
-                      <span className="text-xs">QR Code</span>
-                    </Button>
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
-
-            {/* Propriedades do elemento selecionado */}
-            {selectedEl && (
-              <div className="space-y-4 border-t pt-4">
-                <h3 className="font-medium">Propriedades</h3>
-                
-                {selectedEl.type === 'text' && (
-                  <div className="space-y-2">
-                    <Label>Conteúdo</Label>
-                    <Input
-                      value={selectedEl.content}
-                      onChange={(e) => updateElement(selectedEl.id, { content: e.target.value })}
-                    />
+                      
+                      <div>
+                        <Label htmlFor="textColor">Cor do Texto</Label>
+                        <div className="flex items-center space-x-2">
+                          <input
+                            type="color"
+                            id="textColor"
+                            value={design.textColor}
+                            onChange={(e) => setDesign({...design, textColor: e.target.value})}
+                            className="w-12 h-10 rounded border"
+                          />
+                          <Input
+                            value={design.textColor}
+                            onChange={(e) => setDesign({...design, textColor: e.target.value})}
+                            className="flex-1"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="accentColor">Cor de Destaque</Label>
+                        <div className="flex items-center space-x-2">
+                          <input
+                            type="color"
+                            id="accentColor"
+                            value={design.accentColor}
+                            onChange={(e) => setDesign({...design, accentColor: e.target.value})}
+                            className="w-12 h-10 rounded border"
+                          />
+                          <Input
+                            value={design.accentColor}
+                            onChange={(e) => setDesign({...design, accentColor: e.target.value})}
+                            className="flex-1"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="typography" className="space-y-4">
+                    <div>
+                      <Label htmlFor="fontFamily">Fonte</Label>
+                      <Select
+                        value={design.fontFamily}
+                        onValueChange={(value) => setDesign({...design, fontFamily: value})}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {fontOptions.map((font) => (
+                            <SelectItem key={font.value} value={font.value}>
+                              {font.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                     
-                    <Label>Tamanho da Fonte</Label>
-                    <Input
-                      type="number"
-                      value={selectedEl.style.fontSize}
-                      onChange={(e) => updateElementStyle(selectedEl.id, { fontSize: parseInt(e.target.value) })}
-                    />
+                    <div>
+                      <Label htmlFor="ticketName">Nome do Ingresso</Label>
+                      <Input
+                        id="ticketName"
+                        value={design.name}
+                        onChange={(e) => setDesign({...design, name: e.target.value})}
+                        placeholder="Ex: VIP, Pista, Camarote..."
+                      />
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="images" className="space-y-4">
+                    <div>
+                      <Label>Logo do Evento</Label>
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => handleImageUpload('logo')}
+                      >
+                        <Upload className="h-4 w-4 mr-2" />
+                        Fazer Upload do Logo
+                      </Button>
+                    </div>
                     
-                    <Label>Cor</Label>
-                    <Input
-                      type="color"
-                      value={selectedEl.style.color}
-                      onChange={(e) => updateElementStyle(selectedEl.id, { color: e.target.value })}
-                    />
-                  </div>
-                )}
-
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <Label>X</Label>
-                    <Input
-                      type="number"
-                      value={selectedEl.x}
-                      onChange={(e) => updateElement(selectedEl.id, { x: parseInt(e.target.value) })}
-                    />
-                  </div>
-                  <div>
-                    <Label>Y</Label>
-                    <Input
-                      type="number"
-                      value={selectedEl.y}
-                      onChange={(e) => updateElement(selectedEl.id, { y: parseInt(e.target.value) })}
-                    />
-                  </div>
-                </div>
-
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => deleteElement(selectedEl.id)}
-                  className="w-full"
-                >
-                  Remover Elemento
-                </Button>
-              </div>
-            )}
+                    <div>
+                      <Label>Imagem de Fundo</Label>
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => handleImageUpload('background')}
+                      >
+                        <Image className="h-4 w-4 mr-2" />
+                        Fazer Upload da Imagem
+                      </Button>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
           </div>
 
-          {/* Canvas Principal */}
-          <div className="lg:col-span-3">
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold">Canvas do Ingresso</h2>
-                <div className="text-sm text-gray-500">420 x 150 px</div>
-              </div>
-              
-              <div
-                ref={canvasRef}
-                className="relative border border-gray-300 bg-gray-50 mx-auto"
-                style={{ width: '420px', height: '150px' }}
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-                onClick={() => setSelectedElement(null)}
-              >
-                {/* Background do template */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-20 rounded"></div>
-                
-                {/* Elementos do design */}
-                {elements.map((element) => (
-                  <div
-                    key={element.id}
-                    className={`absolute cursor-move border-2 ${
-                      selectedElement === element.id ? 'border-primary' : 'border-transparent'
-                    }`}
+          {/* Preview Panel */}
+          <div className="lg:col-span-2">
+            <Card className="h-full">
+              <CardHeader>
+                <CardTitle>Visualização do Ingresso</CardTitle>
+                <CardDescription>
+                  Veja como seu ingresso ficará depois de personalizado
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex items-center justify-center min-h-[500px]">
+                <div className="relative">
+                  {/* Ticket Preview */}
+                  <div 
+                    className="w-96 h-56 rounded-lg shadow-lg border-2 border-dashed border-gray-300 relative overflow-hidden"
                     style={{
-                      left: element.x,
-                      top: element.y,
-                      width: element.width,
-                      height: element.height,
-                      fontSize: element.style.fontSize,
-                      color: element.style.color,
-                      backgroundColor: element.style.backgroundColor,
-                      borderRadius: element.style.borderRadius,
-                    }}
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, element)}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedElement(element.id);
+                      backgroundColor: design.backgroundColor,
+                      color: design.textColor,
+                      fontFamily: design.fontFamily
                     }}
                   >
-                    {element.type === 'text' && (
-                      <div className="p-1 font-medium">{element.content}</div>
-                    )}
-                    {element.type === 'image' && (
-                      <div className="w-full h-full bg-gray-200 flex items-center justify-center text-xs">
-                        Imagem
+                    {/* Ticket Header */}
+                    <div 
+                      className="h-16 flex items-center justify-center text-white font-bold text-lg"
+                      style={{ backgroundColor: design.accentColor }}
+                    >
+                      {design.name || 'Nome do Ingresso'}
+                    </div>
+                    
+                    {/* Ticket Body */}
+                    <div className="p-4 space-y-2">
+                      <div className="flex justify-between">
+                        <span className="font-semibold">Evento:</span>
+                        <span>Nome do Evento</span>
                       </div>
-                    )}
-                    {element.type === 'qr' && (
-                      <div className="w-full h-full bg-black flex items-center justify-center text-white text-xs">
-                        QR
+                      <div className="flex justify-between">
+                        <span className="font-semibold">Data:</span>
+                        <span>15/03/2024</span>
                       </div>
-                    )}
-                    {element.type === 'shape' && (
-                      <div className="w-full h-full"></div>
-                    )}
+                      <div className="flex justify-between">
+                        <span className="font-semibold">Local:</span>
+                        <span>Espaço de Eventos</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="font-semibold">Setor:</span>
+                        <span>{design.name}</span>
+                      </div>
+                    </div>
+                    
+                    {/* QR Code Area */}
+                    <div className="absolute bottom-2 right-2 w-12 h-12 bg-gray-800 rounded flex items-center justify-center">
+                      <div className="w-8 h-8 bg-white rounded grid grid-cols-3 gap-px">
+                        {[...Array(9)].map((_, i) => (
+                          <div key={i} className="bg-black rounded-sm"></div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Ticket Number */}
+                    <div className="absolute bottom-2 left-2 text-xs opacity-70">
+                      #00001
+                    </div>
                   </div>
-                ))}
-
-                {/* Guias de alinhamento */}
-                <div className="absolute inset-0 pointer-events-none">
-                  <div className="absolute left-1/2 top-0 bottom-0 w-px bg-blue-300 opacity-30"></div>
-                  <div className="absolute top-1/2 left-0 right-0 h-px bg-blue-300 opacity-30"></div>
+                  
+                  {/* Perforation Effect */}
+                  <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-gray-100 rounded-full border-2 border-gray-300"></div>
                 </div>
-              </div>
-
-              <div className="mt-4 text-sm text-gray-500 text-center">
-                Clique e arraste os elementos para posicioná-los. Use as ferramentas da lateral para adicionar novos elementos.
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
